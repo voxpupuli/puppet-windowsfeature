@@ -1,4 +1,4 @@
-name 'puppet-windows_feature'
+name 'opentable-windowsfeature'
 version '0.0.1'
 author 'opentable'
 license 'MIT'
