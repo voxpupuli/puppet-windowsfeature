@@ -21,6 +21,22 @@ This module is only available to Windows Server 2008 and above due to using the 
      }
     }
     
+    class my_other_windows_feature_implementation {
+        windowsfeature{'IIS':
+          feature_name => ['Web-Server',
+            'Web-WebServer',
+            'Web-Asp-Net45',
+            'Web-ISAPI-Ext',
+            'Web-ISAPI-Filter',
+            'NET-Framework-45-ASPNET',
+            'WAS-NET-Environment',
+            'Web-Http-Redirect',
+            'Web-Filtering',
+            'Web-Mgmt-Console',
+            'Web-Mgmt-Tools'],
+        }
+    }
+    
 Then each place you want to use a module to manage windows features, then you just include it in your nodes.pp as follows:
 
     node 'mywebserver' {
