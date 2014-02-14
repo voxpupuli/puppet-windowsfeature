@@ -18,7 +18,7 @@ define windowsfeature($feature_name = $title, $ensure = 'present', $restart = 'f
     exec { "add-feature-${title}" :
       command   => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; Add-WindowsFeature ${features} -Restart:$${restart}\"",
       path      => "${windowsfeature::param::powershell::path};${::path}",
-      onlyif    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where InstallState -eq 'Available').count -eq 0){ exit 1 }\"",
+      onlyif    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where InstallState -ne 'Installed').count -eq 0){ exit 1 }\"",
       logoutput => true,
     }
   } elsif ($ensure == 'absent') {
