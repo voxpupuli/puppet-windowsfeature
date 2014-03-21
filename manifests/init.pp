@@ -18,14 +18,14 @@ define windowsfeature($feature_name = $title, $ensure = 'present', $restart = 'f
     exec { "add-feature-${title}" :
       command   => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; Add-WindowsFeature ${features} -Restart:$${restart}\"",
       path      => "${windowsfeature::param::powershell::path};${::path}",
-      onlyif    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where {$_.Installed -eq \$False} | measure).count -eq 0){ exit 1 }\"",
+      onlyif    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where {\$_.Installed -eq \$False} | measure).count -eq 0){ exit 1 }\"",
       logoutput => true,
     }
   } elsif ($ensure == 'absent') {
     exec { "remove-feature-${title}" :
       command   => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; Remove-WindowsFeature ${$features} -Restart:$${restart}\"",
       path      => "${windowsfeature::param::powershell::path};${::path}",
-      unless    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where {$_.Installed -eq \$True}).count -gt 0){ exit 1 }\"",
+      unless    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where {\$_.Installed -eq \$True}).count -gt 0){ exit 1 }\"",
       logoutput => true,
     }
   }
