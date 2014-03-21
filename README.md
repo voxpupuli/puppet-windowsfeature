@@ -20,6 +20,11 @@ This module is only available to Windows Server 2008 and above due to using the 
      	ensure => absent,
      }
     }
+	
+	class windows_feature_with_restart {
+	 windowsfeature {'RDS-RD-Server':
+		restart => 'true',
+	}
     
     class my_other_windows_feature_implementation {
         windowsfeature{'IIS':
