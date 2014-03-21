@@ -25,7 +25,7 @@ define windowsfeature($feature_name = $title, $ensure = 'present', $restart = 'f
     exec { "remove-feature-${title}" :
       command   => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; Remove-WindowsFeature ${$features} -Restart:$${restart}\"",
       path      => "${windowsfeature::param::powershell::path};${::path}",
-      unless    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where {\$_.Installed -eq \$True}).count -gt 0){ exit 1 }\"",
+      unless    => "${windowsfeature::param::powershell::command} -Command \"Import-Module ServerManager; if((Get-WindowsFeature ${features} | where {\$_.Installed -eq \$True} | measure).count -gt 0){ exit 1 }\"",
       logoutput => true,
     }
   }
