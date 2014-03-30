@@ -1,6 +1,6 @@
 fixtures:
   repositories:
     stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
-    stdlib: git://github.com/joshcooper/puppetlabs-powershell.git
+    powershell: git://github.com/joshcooper/puppetlabs-powershell.git
   symlinks:
     windowsfeature: "#{source_dir}"
