@@ -3,6 +3,7 @@ define windowsfeature($feature_name = $title, $ensure = 'present', $restart = fa
   validate_re($ensure, '^(present|absent)$', 'valid values for ensure are \'present\' or \'absent\'')
   validate_bool($restart)
 
+  if $operatingsystem != 'windows' { fail ("${module_name} not supported on ${::operatingsystem}") }
   if $restart { $_restart = 'true' } else { $_restart = 'false' }
 
   if(is_array($feature_name)){
