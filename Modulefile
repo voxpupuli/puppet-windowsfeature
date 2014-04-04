@@ -1,5 +1,5 @@
 name 'opentable-windowsfeature'
-version '0.1.0'
+version '0.1.1'
 author 'opentable'
 license 'MIT'
 summary 'Module that will turn windows features on or off for Windows Server 2008 and above'
