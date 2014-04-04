@@ -1,13 +1,13 @@
 puppet-windowsfeature
 =====================
 
-Library that uses ServerManager api that comes with Windows Server 2008 and Windows Server 2012 to add / remove windows features
+Library that uses ServerManager API that comes with Windows Server 2008 R2 and Windows Server 2012 to add/remove Windows features.
 
 [![Build Status](https://travis-ci.org/opentable/puppet-windowsfeature.png?branch=master)](https://travis-ci.org/opentable/puppet-windowsfeature)
 
 Usage
 --
-This module is only available to Windows Server 2008 and above due to using the ServerManager module that ships with PowerShell.  To use the module, use git clone to a directory in your modules folder on your puppetmaster. Then create a module manifest for the site you wish to maintain configuration for. Then you need to include this new module manifest in your nodes.pp file as follows:
+This module supports Windows Server 2008 R2 and newer due to using the ServerManager module that ships with PowerShell.  To use the module, use git clone to a directory in your modules folder on your puppetmaster. Then create a module manifest for the site you wish to maintain configuration for. Then you need to include this new module manifest in your nodes.pp file as follows:
     
     class my_windows_features {
      windowsfeature { 'Web-Asp-Net': }
@@ -16,9 +16,7 @@ This module is only available to Windows Server 2008 and above due to using the 
      windowsfeature { 'Web-ISAPI-Filter': }
      windowsfeature { 'Web-Mgmt-Tools': }
      windowsfeature { 'Web-Mgmt-Console': }
-     windowsfeature { 'telnet':
-     	ensure => absent,
-     }
+     windowsfeature { 'Telnet-Server': ensure => absent }
     }
     
     class my_other_windows_feature_implementation {
