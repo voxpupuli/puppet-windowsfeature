@@ -29,18 +29,18 @@ describe 'windowsfeature', :type => :define do
             'provider' => 'powershell'
           })}
 
-          context '$includemanagementtools => true' do
-            let(:params) { { :includemanagementtools => true } }
+          context '$installmanagementtools => true' do
+            let(:params) { { :installmanagementtools => true } }
 
             it do
               expect {
                 subject
-              }.to raise_error(Puppet::Error, /Windows 2012 or newer is required to use the includemanagementtools parameter/)
+              }.to raise_error(Puppet::Error, /Windows 2012 or newer is required to use the installmanagementtools parameter/)
             end
           end
 
-          context '$includesubfeatures => true' do
-            let(:params) { { :includesubfeatures => true } }
+          context '$installsubfeatures => true' do
+            let(:params) { { :installsubfeatures => true } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Add-WindowsFeature NET-HTTP-Activation  -IncludeAllSubFeature -Restart:$false',
               'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
@@ -91,8 +91,8 @@ describe 'windowsfeature', :type => :define do
             'provider' => 'powershell'
           })}
 
-          context '$includemanagementtools => true' do
-            let(:params) { { :includemanagementtools => true } }
+          context '$installmanagementtools => true' do
+            let(:params) { { :installmanagementtools => true } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Install-WindowsFeature NET-HTTP-Activation -IncludeManagementTools  -Restart:$false',
               'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
@@ -100,8 +100,8 @@ describe 'windowsfeature', :type => :define do
             })}
           end
 
-          context '$includesubfeatures => true' do
-            let(:params) { { :includesubfeatures => true } }
+          context '$installsubfeatures => true' do
+            let(:params) { { :installsubfeatures => true } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Install-WindowsFeature NET-HTTP-Activation  -IncludeAllSubFeature -Restart:$false',
               'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",

@@ -1,24 +1,24 @@
 define windowsfeature (
     $ensure = 'present',
     $feature_name = $title,
-    $includemanagementtools = false,
-    $includesubfeatures = false,
+    $installmanagementtools = false,
+    $installsubfeatures = false,
     $restart = false
 ) {
 
   validate_re($ensure, '^(present|absent)$', 'valid values for ensure are \'present\' or \'absent\'')
-  validate_bool($includemanagementtools)
-  validate_bool($includesubfeatures)
+  validate_bool($installmanagementtools)
+  validate_bool($installsubfeatures)
   validate_bool($restart)
 
   if $::operatingsystem != 'windows' { fail ("${module_name} not supported on ${::operatingsystem}") }
   if $restart { $_restart = 'true' } else { $_restart = 'false' }
-  if $includesubfeatures { $_includesubfeatures = '-IncludeAllSubFeature' }
+  if $installsubfeatures { $_installsubfeatures = '-IncludeAllSubFeature' }
 
-  if $::kernelversion =~ /^(6.1)/ and $includemanagementtools {
-    fail ('Windows 2012 or newer is required to use the includemanagementtools parameter')
-  } elsif $includemanagementtools {
-    $_includemanagementtools = '-IncludeManagementTools'
+  if $::kernelversion =~ /^(6.1)/ and $installmanagementtools {
+    fail ('Windows 2012 or newer is required to use the installmanagementtools parameter')
+  } elsif $installmanagementtools {
+    $_installmanagementtools = '-IncludeManagementTools'
   }
 
   if(is_array($feature_name)){
@@ -36,7 +36,7 @@ define windowsfeature (
     if $::kernelversion =~ /^(6.1)/ { $command = 'Add-WindowsFeature' } else { $command = 'Install-WindowsFeature' }
 
     exec { "add-feature-${title}" :
-      command   => "Import-Module ServerManager; ${command} ${features} ${_includemanagementtools} ${_includesubfeatures} -Restart:$${_restart}",
+      command   => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} -Restart:$${_restart}",
       onlyif    => "Import-Module ServerManager; if((Get-WindowsFeature ${features} | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
       provider  => powershell
     }
