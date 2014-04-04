@@ -41,6 +41,24 @@ Then each place you want to use a module to manage windows features, then you ju
     	include 'my_windows_features'
     }
 
+To install any associated management tools:
+
+    windowsfeature { [
+      'FS-DFS-Namespace',
+      'FS-DFS-Replication',
+      'FS-FileServer',
+      'FS-Resource-Manager'
+      ]:
+      includemanagementtools => true
+    }
+
+To install all subfeatures:
+
+    windowsfeature { 'Web-Server':
+      includesubfeatures => true
+    }
+
+
 Further Info
 --
 For a list of the windows features you can install, please visit this [technet article](http://technet.microsoft.com/en-us/library/cc732757.aspx)
