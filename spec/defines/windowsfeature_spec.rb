@@ -25,7 +25,7 @@ describe 'windowsfeature', :type => :define do
         context 'when installing a windows feature' do
           it { should contain_exec('add-feature-NET-HTTP-Activation').with({
             'command'  => 'Import-Module ServerManager; Add-WindowsFeature NET-HTTP-Activation -Restart:$false',
-            'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+            'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
             'provider' => 'powershell'
           })}
 
@@ -33,7 +33,7 @@ describe 'windowsfeature', :type => :define do
             let(:params) { { :restart => true } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Add-WindowsFeature NET-HTTP-Activation -Restart:$true',
-              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
               'provider' => 'powershell'
             })}
           end
@@ -42,7 +42,7 @@ describe 'windowsfeature', :type => :define do
             let(:params) { { :restart => false } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Add-WindowsFeature NET-HTTP-Activation -Restart:$false',
-              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
               'provider' => 'powershell'
             })}
           end
@@ -52,7 +52,7 @@ describe 'windowsfeature', :type => :define do
 
             it { should contain_exec('remove-feature-NET-HTTP-Activation').with({
                  'command'  => "Import-Module ServerManager; Remove-WindowsFeature NET-HTTP-Activation -Restart:$false",
-                 'unless'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Installed').count -gt 0){ exit 1 }",
+                 'unless'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Installed'}).count -gt 0){ exit 1 }",
                  'provider' => 'powershell'
             })}
           end
@@ -68,7 +68,7 @@ describe 'windowsfeature', :type => :define do
         context 'when installing a windows feature' do
           it { should contain_exec('add-feature-NET-HTTP-Activation').with({
             'command'  => 'Import-Module ServerManager; Install-WindowsFeature NET-HTTP-Activation -Restart:$false',
-            'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+            'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
             'provider' => 'powershell'
           })}
 
@@ -76,7 +76,7 @@ describe 'windowsfeature', :type => :define do
             let(:params) { { :restart => true } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Install-WindowsFeature NET-HTTP-Activation -Restart:$true',
-              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
               'provider' => 'powershell'
             })}
           end
@@ -85,7 +85,7 @@ describe 'windowsfeature', :type => :define do
             let(:params) { { :restart => false } }
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Install-WindowsFeature NET-HTTP-Activation -Restart:$false',
-              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
               'provider' => 'powershell'
             })}
           end
@@ -95,7 +95,7 @@ describe 'windowsfeature', :type => :define do
 
             it { should contain_exec('remove-feature-NET-HTTP-Activation').with({
                  'command'  => "Import-Module ServerManager; Remove-WindowsFeature NET-HTTP-Activation -Restart:$false",
-                 'unless'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Installed').count -gt 0){ exit 1 }",
+                 'unless'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Installed'}).count -gt 0){ exit 1 }",
                  'provider' => 'powershell'
             })}
           end
@@ -105,7 +105,7 @@ describe 'windowsfeature', :type => :define do
 
             it { should contain_exec('add-feature-NET-HTTP-Activation').with({
               'command'  => 'Import-Module ServerManager; Install-WindowsFeature NET-HTTP-Activation -Restart:$false',
-              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+              'onlyif'   => "Import-Module ServerManager; if((Get-WindowsFeature NET-HTTP-Activation | where { $_.InstallState -eq 'Available'}).count -eq 0){ exit 1 }",
               'provider' => 'powershell'
             })}
           end
