@@ -35,15 +35,15 @@ define windowsfeature (
   if ($ensure == 'present') {
     if $::kernelversion =~ /^(6.1)/ { $command = 'Add-WindowsFeature' } else { $command = 'Install-WindowsFeature' }
 
-    exec { "add-feature-${title}" :
+    exec { "add-feature-${title}":
       command   => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} -Restart:$${_restart}",
-      onlyif    => "Import-Module ServerManager; if((Get-WindowsFeature ${features} | where InstallState -eq 'Available').count -eq 0){ exit 1 }",
+      onlyif    => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'false\'}).count -eq 0) { exit 1 }",
       provider  => powershell
     }
   } elsif ($ensure == 'absent') {
-    exec { "remove-feature-${title}" :
-      command   => "Import-Module ServerManager; Remove-WindowsFeature ${$features} -Restart:$${_restart}",
-      unless    => "Import-Module ServerManager; if((Get-WindowsFeature ${features} | where InstallState -eq 'Installed').count -gt 0){ exit 1 }",
+    exec { "remove-feature-${title}":
+      command   => "Import-Module ServerManager; Remove-WindowsFeature ${features} -Restart:$${_restart}",
+      onlyif    => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'true\'}).count -eq 0) { exit 1 }",
       provider  => powershell
     }
   }
