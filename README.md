@@ -53,6 +53,12 @@ To install all subfeatures:
       installsubfeatures => true
     }
 
+To install a feature and that requires a restart:
+
+    class windows_feature_with_restart {
+      windowsfeature {'RDS-RD-Server':
+        restart => 'true',
+    }
 
 Known Issues
 --
