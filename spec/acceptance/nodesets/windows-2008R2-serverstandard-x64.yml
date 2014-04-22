@@ -1,0 +1,12 @@
+HOSTS:
+  windows-2008R2-serverstandard-x64:
+    roles:
+      - agent
+    platform: windows-server-amd64
+    box : windows-2008R2-serverstandard-x64
+    box_url : /Users/pstack/Documents/beaker/windows-2008R2-serverstandard-amd64_virtualbox.box
+    hypervisor : vagrant
+    user: vagrant
+CONFIG:
+  log_level: verbose
+  type: git
