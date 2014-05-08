@@ -9,15 +9,9 @@ hosts.each do |host|
       include Serverspec::Helper::Windows
       include Serverspec::Helper::WinRM
 
-      #version = ENV['PUPPET_VERSION'] || '3.4.3'
+      version = ENV['PUPPET_VERSION'] || '3.4.3'
 
-      install_puppet(:version => '3.4.3')
-
-      #Because puppet_module_install doesn't create the directory if it's missing
-      on host, 'mkdir -p /cygdrive/c/ProgramData/PuppetLabs/puppet/etc/modules'
-
-      #Because the msi installer doesn't add Puppet to the environment path
-      on host, %q{ echo 'export PATH=$PATH:"/cygdrive/c/Program Files (x86)/Puppet Labs/Puppet/bin"' > /etc/bash.bashrc }
+      install_puppet(:version => version)
 
     else
       # TODO: This function needs some work in beaker because it doesn't work when specifying the version
@@ -42,18 +36,14 @@ RSpec.configure do |c|
       c.host = host
 
       if host['platform'] =~ /windows/
-        #Providing an empty module name means that the current name e.g. puppet-puppetversion will be used.
-        puppet_module_install(:source => proj_root, :module_name => '')
-
         endpoint = "http://127.0.0.1:5985/wsman"
         c.winrm = ::WinRM::WinRMWebService.new(endpoint, :ssl, :user => 'vagrant', :pass => 'vagrant', :basic_auth_only => true)
         c.winrm.set_timeout 300
-      else
-        puppet_module_install(:source => proj_root, :module_name => 'windowsfeature')
       end
 
-      on host, puppet(host, 'module','install', forge_repo, 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
-      on host, puppet(host, 'module','install', forge_repo, 'joshcooper-powershell'), { :acceptable_exit_codes => [0,1] }
+      puppet_module_install(:source => proj_root, :module_name => 'windowsfeature')
+      on host, puppet('module','install', forge_repo, 'puppetlabs-stdlib'), { :acceptable_exit_codes => [0,1] }
+      on host, puppet('module','install', forge_repo, 'joshcooper-powershell'), { :acceptable_exit_codes => [0,1] }
     end
   end
 end
