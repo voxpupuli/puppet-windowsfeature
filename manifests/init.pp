@@ -1,3 +1,4 @@
+#
 define windowsfeature (
     $ensure = 'present',
     $feature_name = $title,
@@ -12,7 +13,7 @@ define windowsfeature (
   validate_bool($restart)
 
   if $::operatingsystem != 'windows' { fail ("${module_name} not supported on ${::operatingsystem}") }
-  if $restart { $_restart = 'true' } else { $_restart = 'false' }
+  if $restart { $_restart = true } else { $_restart = false }
   if $installsubfeatures { $_installsubfeatures = '-IncludeAllSubFeature' }
 
   if $::kernelversion =~ /^(6.1)/ and $installmanagementtools {
@@ -22,7 +23,7 @@ define windowsfeature (
   }
 
   if(is_array($feature_name)){
-    $escaped = join(prefix(suffix($feature_name,"'"),"'"),',')
+    $escaped = join(prefix(suffix($feature_name,'\''),'\''),',')
     $features = "@(${escaped})"
   }else{
     $features = $feature_name
