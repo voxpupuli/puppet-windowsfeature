@@ -11,7 +11,7 @@ describe 'windowsfeature', :type => :define do
 
         it do
           expect {
-            subject
+            should contain_define('windowsfeature')
           }.to raise_error(Puppet::Error, /windowsfeature requires Windows 2008 R2 or newer/)
         end
       end
@@ -34,7 +34,7 @@ describe 'windowsfeature', :type => :define do
 
             it do
               expect {
-                subject
+                should contain_define('windowsfeature')
               }.to raise_error(Puppet::Error, /Windows 2012 or newer is required to use the installmanagementtools parameter/)
             end
           end
@@ -159,7 +159,7 @@ describe 'windowsfeature', :type => :define do
 
     it do
       expect {
-        subject
+        should contain_define('windowsfeature')
       }.to raise_error(Puppet::Error, /windowsfeature not supported on Ubuntu/)
     end
   end
