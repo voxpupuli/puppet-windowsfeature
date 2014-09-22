@@ -8,13 +8,16 @@ group :test do
   gem "puppet-syntax"
   gem "puppetlabs_spec_helper", "0.4.1"
   gem "rspec", "2.99.0"
+  gem "beaker", :path => '/Users/liamjbennett/Dev/forks/beaker'
+  gem "beaker-rspec", :git => 'https://github.com/puppetlabs/beaker-rspec'
+  gem "serverspec", '~> 1.6.0'
+  gem "specinfra", '~> 1.11.0'
+  gem "winrm"
 end
 
 group :development do
   gem "travis"
   gem "travis-lint"
-  gem "beaker"
-  gem "beaker-rspec"
   gem "vagrant-wrapper"
   gem "puppet-blacksmith"
   gem "guard-rake"
