@@ -4,7 +4,8 @@ define windowsfeature (
     $feature_name = $title,
     $installmanagementtools = false,
     $installsubfeatures = false,
-    $restart = false
+    $restart = false,
+    $source = false
 ) {
 
   validate_re($ensure, '^(present|absent)$', 'valid values for ensure are \'present\' or \'absent\'')
@@ -15,6 +16,7 @@ define windowsfeature (
   if $::operatingsystem != 'windows' { fail ("${module_name} not supported on ${::operatingsystem}") }
   if $restart { $_restart = true } else { $_restart = false }
   if $installsubfeatures { $_installsubfeatures = '-IncludeAllSubFeature' }
+  if $source {$_installsource = "-Source $source"}
 
   if $::kernelversion =~ /^(6.1)/ and $installmanagementtools {
     fail ('Windows 2012 or newer is required to use the installmanagementtools parameter')
@@ -37,7 +39,7 @@ define windowsfeature (
     if $::kernelversion =~ /^(6.1)/ { $command = 'Add-WindowsFeature' } else { $command = 'Install-WindowsFeature' }
 
     exec { "add-feature-${title}":
-      command   => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} -Restart:$${_restart}",
+      command   => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} ${_installsource} -Restart:$${_restart}",
       onlyif    => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'false\'}).count -eq 0) { exit 1 }",
       provider  => powershell
     }
