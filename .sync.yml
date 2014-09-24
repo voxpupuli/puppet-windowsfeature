@@ -1,13 +1,13 @@
 ---
 spec/acceptance/nodesets/centos-59-x64.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/centos-64-x64-pe.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/centos-65-x64.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/ubuntu-server-10044-x64.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/ubuntu-server-12042-x64.yml:
-  delete: true
+  unmanaged: true
 spec/acceptance/nodesets/ubuntu-server-1404-x64.yml:
-  delete: true
+  unmanaged: true
