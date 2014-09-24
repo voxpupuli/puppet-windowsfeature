@@ -4,6 +4,7 @@ require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks'
 
 PuppetLint.configuration.fail_on_warnings
+PuppetLint.configuration.relative = true
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.send('disable_class_inherits_from_params_class')
 PuppetLint.configuration.send('disable_class_parameter_defaults')
