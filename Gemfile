@@ -29,6 +29,7 @@ group :development, :test do
   gem 'vagrant-wrapper',                                                         :require => false
   gem 'puppet-blacksmith',                                                       :require => false
   gem 'guard-rake',                                                              :require => false
+  gem 'puppet-doc-lint',                                                         :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
