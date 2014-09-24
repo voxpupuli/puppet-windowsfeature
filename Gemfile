@@ -1,24 +1,34 @@
-source "http://rubygems.org"
+source ENV['GEM_SOURCE'] || "https://rubygems.org"
 
-group :test do
-  gem "rake"
-  gem "puppet", ENV['PUPPET_VERSION'] || '~> 3.4.0'
-  gem "puppet-lint"
-  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
-  gem "puppet-syntax"
-  gem "puppetlabs_spec_helper", "0.4.1"
-  gem "rspec", "2.99.0"
-  gem "beaker", :path => '/Users/liamjbennett/Dev/forks/beaker'
-  gem "beaker-rspec", :git => 'https://github.com/puppetlabs/beaker-rspec'
-  gem "serverspec", '~> 1.6.0'
-  gem "specinfra", '~> 1.11.0'
-  gem "winrm"
+group :development, :test do
+  gem 'rake',                                                                  :require => false
+  gem 'puppet-lint',                                                           :require => false
+  gem 'rspec-puppet,', 'git => 'https://github.com/rodjek/rspec-puppet.git'',  :require => false
+  gem 'puppet-syntax',                                                         :require => false
+  gem 'puppetlabs_spec_helper',                                                :require => false
+  gem 'rspec',                                                                 :require => false
+  gem 'beaker',                                                                :require => false
+  gem 'beaker-rspec',                                                          :require => false
+  gem 'serverspec',                                                            :require => false
+  gem 'specinfra',                                                             :require => false
+  gem 'winrm',                                                                 :require => false
+  gem 'travis',                                                                :require => false
+  gem 'travis-lint',                                                           :require => false
+  gem 'vagrant-wrapper',                                                       :require => false
+  gem 'puppet-blacksmith',                                                     :require => false
+  gem 'guard-rake',                                                            :require => false
 end
 
-group :development do
-  gem "travis"
-  gem "travis-lint"
-  gem "vagrant-wrapper"
-  gem "puppet-blacksmith"
-  gem "guard-rake"
+if facterversion = ENV['FACTER_GEM_VERSION']
+  gem 'facter', facterversion, :require => false
+else
+  gem 'facter', :require => false
 end
+
+if puppetversion = ENV['PUPPET_GEM_VERSION']
+  gem 'puppet', puppetversion, :require => false
+else
+  gem 'puppet', :require => false
+end
+
+# vim:ft=ruby

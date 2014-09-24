@@ -1,3 +1,9 @@
-*.iml
+pkg/
 Gemfile.lock
-/.idea/*
+vendor/
+spec/fixtures/
+.vagrant/
+.bundle/
+coverage/
+*.iml
+.idea/
