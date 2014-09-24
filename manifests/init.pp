@@ -16,7 +16,7 @@ define windowsfeature (
   if $::operatingsystem != 'windows' { fail ("${module_name} not supported on ${::operatingsystem}") }
   if $restart { $_restart = true } else { $_restart = false }
   if $installsubfeatures { $_installsubfeatures = '-IncludeAllSubFeature' }
-  if $source {$_installsource = "-Source $source"}
+  if $source {$_installsource = "-Source ${source}"}
 
   if $::kernelversion =~ /^(6.1)/ and $installmanagementtools {
     fail ('Windows 2012 or newer is required to use the installmanagementtools parameter')
