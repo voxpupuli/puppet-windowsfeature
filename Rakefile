@@ -15,6 +15,6 @@ PuppetLint.configuration.ignore_paths = ["spec/**/*.pp", "pkg/**/*.pp"]
 desc "Run syntax, lint, and spec tests."
 task :test => [
   :syntax,
-	:lint,
-	:spec
+  :lint,
+  :spec
 ]

@@ -3,12 +3,12 @@ source ENV['GEM_SOURCE'] || "https://rubygems.org"
 ENV['RUBY_VERSION'] = `ruby -v`
 
 group :development, :test do
-  
-	if ENV['RUBY_VERSION'] =~ /1.8/
-	  gem 'rest-client', '1.6.8'	
-		gem 'gssapi', '1.2.0'
-		gem 'celluloid', '0.11.1'
-	end
+
+  if ENV['RUBY_VERSION'] =~ /1.8/
+    gem 'rest-client', '1.6.8'
+    gem 'gssapi', '1.2.0'
+    gem 'celluloid', '0.11.1'
+  end
 
   gem 'rake',                                                                    :require => false
   gem 'puppet-lint',                                                             :require => false
