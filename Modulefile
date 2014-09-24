@@ -1,8 +1,0 @@
-name 'opentable-windowsfeature'
-version '0.2.0'
-author 'opentable'
-license 'MIT'
-summary 'Module that will turn windows features on or off for Windows Server 2008 and above'
-project_page 'https://github.com/opentable/puppet-windowsfeature'
-dependency    'puppetlabs/powershell', '>=1.0.3'
-dependency    'puppetlabs/stdlib', '>=4.0.0'
