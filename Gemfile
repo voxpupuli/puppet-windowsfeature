@@ -10,6 +10,10 @@ group :development, :test do
     gem 'celluloid', '0.11.1'
   end
 
+  if ENV['PUPPET_VERSION'] =~ /3.4/
+    gem 'puppet-doc-lint', :require => false
+  end
+
   gem 'rake',                                                                    :require => false
   gem 'puppet-lint',                                                             :require => false
   gem 'rspec-puppet',
@@ -29,7 +33,6 @@ group :development, :test do
   gem 'vagrant-wrapper',                                                         :require => false
   gem 'puppet-blacksmith',                                                       :require => false
   gem 'guard-rake',                                                              :require => false
-  gem 'puppet-doc-lint',                                                         :require => false
 end
 
 if facterversion = ENV['FACTER_GEM_VERSION']
