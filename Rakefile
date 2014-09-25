@@ -18,9 +18,9 @@ PuppetLint.configuration.send('disable_documentation')
 PuppetLint.configuration.send('disable_single_quote_string_with_variables')
 
 exclude_paths = [
-  "pkg/**/*.{pp,erb}",
-  "vendor/**/*.{pp,erb}",
-  "spec/**/*.{pp,erb}"
+  "**/pkg/**/*.{pp,erb}",
+  "**/vendor/**/*.{pp,erb}",
+  "**/spec/**/*.{pp,erb}"
 ]
 
 PuppetLint.configuration.ignore_paths = exclude_paths
