@@ -10,7 +10,7 @@ group :development, :test do
     gem 'celluloid', '0.11.1'
   end
 
-  if ENV['PUPPET_VERSION'] =~ /3.4/
+  if ENV['PUPPET_GEM_VERSION'] =~ /3.4/
     gem 'puppet-doc-lint', :require => false
   end
 
