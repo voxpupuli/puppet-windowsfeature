@@ -4,7 +4,7 @@ require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks'
 
 
-if ENV['PUPPET_GEM_VERSION'] =~ /3.4/
+if ENV['PUPPET_GEM_VERSION'] =~ /3.4/ && ENV['RUBY_VERSION'] !~ /1.8/
   require 'puppet-doc-lint/rake_task'
 end
 
@@ -18,9 +18,9 @@ PuppetLint.configuration.send('disable_documentation')
 PuppetLint.configuration.send('disable_single_quote_string_with_variables')
 
 exclude_paths = [
-  "pkg/**/*",
-  "vendor/**/*",
-  "spec/**/*"
+  "pkg/**/*.pp",
+  "vendor/**/*.pp",
+  "spec/**/*.pp"
 ]
 
 PuppetLint.configuration.ignore_paths = exclude_paths
