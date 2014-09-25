@@ -4,7 +4,7 @@ require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks'
 
 
-if ENV['PUPPET_VERSION'] =~ /3.4/
+if ENV['PUPPET_GEM_VERSION'] =~ /3.4/
   require 'puppet-doc-lint/rake_task'
 end
 
