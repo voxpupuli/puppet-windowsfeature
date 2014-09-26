@@ -19,6 +19,7 @@ define windowsfeature (
   if $source {$_installsource = "-Source ${source}"}
 
   if $::kernelversion =~ /^(6.1)/ and $installmanagementtools {
+    $_installmanagementools = ''
     fail ('Windows 2012 or newer is required to use the installmanagementtools parameter')
   } elsif $installmanagementtools {
     $_installmanagementtools = '-IncludeManagementTools'
