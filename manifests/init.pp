@@ -4,9 +4,12 @@
 
 # == Define Resource Type: `windowsfeature`
 #
-#
+# Allows you to add/removing windows features on Windows 2008+
 #
 # === Requirements/Dependencies
+#
+# Currently requires the modules puppetlabs/stdlib and puppetlabs/powershell on
+# the Puppet Forge in order to validate much of the the provided configuration
 #
 # === Parameters
 #
