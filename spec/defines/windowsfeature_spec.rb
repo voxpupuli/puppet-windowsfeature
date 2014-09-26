@@ -34,7 +34,7 @@ describe 'windowsfeature', :type => :define do
 
             it do
               expect {
-                should contain_define('windowsfeature')
+                should contain_exec('add-feature-NET-HTTP-Activation')
               }.to raise_error(Puppet::Error, /Windows 2012 or newer is required to use the installmanagementtools parameter/)
             end
           end

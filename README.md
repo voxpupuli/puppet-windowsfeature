@@ -8,7 +8,7 @@ Library that uses ServerManager API that comes with Windows Server 2008 R2 and W
 Usage
 --
 This module supports Windows Server 2008 R2 and newer due to using the ServerManager module that ships with PowerShell.  To use the module, use git clone to a directory in your modules folder on your puppetmaster. Then create a module manifest for the site you wish to maintain configuration for. Then you need to include this new module manifest in your nodes.pp file as follows:
-    
+
     class my_windows_features {
       windowsfeature { 'Web-Asp-Net': }
       windowsfeature { 'Web-Net-Ext': }
@@ -18,7 +18,7 @@ This module supports Windows Server 2008 R2 and newer due to using the ServerMan
       windowsfeature { 'Web-Mgmt-Console': }
       windowsfeature { 'Telnet-Server': ensure => absent }
     }
-    
+
     class my_other_windows_feature_implementation {
       windowsfeature{'IIS':
         feature_name => ['Web-Server',
@@ -34,7 +34,7 @@ This module supports Windows Server 2008 R2 and newer due to using the ServerMan
           'Web-Mgmt-Tools']
       }
     }
-    
+
 Then each place you want to use a module to manage windows features, then you just include it in your nodes.pp as follows:
 
     node 'mywebserver' {
@@ -68,5 +68,3 @@ Known Issues
 Further Info
 --
 For a list of the windows features you can install, please visit this [technet article](http://technet.microsoft.com/en-us/library/cc732757.aspx)
-
-    
