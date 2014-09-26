@@ -84,11 +84,22 @@ To install a feature and that requires a restart:
 
 **Parameters within `windowsfeature`:**
 #####`ensure`
+Controls if the Windows feature is installed. Can be `present` or `absent`.
+
 #####`feature_name`
+Provides the name of the feature that you want to install if this differs from the resource title.
+
 #####`installmanagementtools`
+Specifies that all applicable management tools should be installed for the given feature. Defaults to `false`
+
 #####`installsubfeatures`
+Specifiies that all subordinate features of this feature are also installed. Defaults to `false`
+
 #####`restart`
+Specifies that when installing the windows feature it should perform and restart automatically.
+
 #####`source`
+Speficies the location of the feature files. This may be a network location or a path to the specific wim file.
 
 ##Reference
 
