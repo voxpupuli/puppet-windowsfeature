@@ -1,11 +1,11 @@
 {
   "name": "opentable/windowsfeature",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "author": "Paul Stack <pstack@opentable.com>",
   "license": "MIT",
   "summary": "A module that will turn windows features on or off for Windows Server 2008 and above",
   "source": "https://github.com/opentable/puppet-windowsfeature",
-  "project_page": "(https://forge.puppetlabs.com/opentable/windowsfeature)",
+  "project_page": "https://forge.puppetlabs.com/opentable/windowsfeature",
   "issues_url": "https://github.com/opentable/puppet-windowsfeature/issues",
   "tags": ["windows", "utility", "powershell"],
   "operatingsystem_support": [
