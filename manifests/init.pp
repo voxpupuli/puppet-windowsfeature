@@ -19,11 +19,13 @@
 #
 # [*installmanagementtools*] Specifies that all applicable management tools should be installed for the given feature. Defaults to `false`
 #
-# [*installsubfeatures*] Specifiies that all subordinate features of this feature are also installed. Defaults to `false`
+# [*installsubfeatures*] Specifies that all subordinate features of this feature are also installed. Defaults to `false`
 #
 # [*restart*] Specifies that when installing the windows feature it should perform and restart automatically.
 #
-# [*source*] Speficies the location of the feature files. This may be a network location or a path to the specific wim file.
+# [*source*] Specifies the location of the feature files. This may be a network location or a path to the specific wim file.
+#
+# [*timeout*] Specifies the timeout in seconds (default is 300) after which the module will conclude the configuration has failed and abort.
 #
 # === Examples
 #
@@ -55,7 +57,8 @@ define windowsfeature (
     $installmanagementtools = false,
     $installsubfeatures = false,
     $restart = false,
-    $source = false
+    $source = false,
+    $timeout = 300
 ) {
 
   validate_re($ensure, '^(present|absent)$', 'valid values for ensure are \'present\' or \'absent\'')
@@ -105,12 +108,14 @@ define windowsfeature (
     exec { "add-feature-${title}":
       command  => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} ${_installsource} -Restart:$${_restart}",
       onlyif   => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'false\'}).count -eq 0) { exit 1 }",
+      timeout  => $timeout,
       provider => powershell
     }
   } elsif ($ensure == 'absent') {
     exec { "remove-feature-${title}":
       command  => "Import-Module ServerManager; Remove-WindowsFeature ${features} -Restart:$${_restart}",
       onlyif   => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'true\'}).count -eq 0) { exit 1 }",
+      timeout  => $timeout,
       provider => powershell
     }
   }

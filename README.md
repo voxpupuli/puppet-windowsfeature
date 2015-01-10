@@ -101,6 +101,9 @@ Specifies that when installing the windows feature it should perform and restart
 #####`source`
 Speficies the location of the feature files. This may be a network location or a path to the specific wim file.
 
+#####`timeout`
+Specifies the timeout in seconds (default is 300) after which the module will conclude the configuration has failed and abort.
+
 ##Reference
 
 
