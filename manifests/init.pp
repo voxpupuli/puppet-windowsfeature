@@ -55,7 +55,8 @@ define windowsfeature (
     $installmanagementtools = false,
     $installsubfeatures = false,
     $restart = false,
-    $source = false
+    $source = false,
+    $timeout = 300,
 ) {
 
   validate_re($ensure, '^(present|absent)$', 'valid values for ensure are \'present\' or \'absent\'')
@@ -105,13 +106,15 @@ define windowsfeature (
     exec { "add-feature-${title}":
       command  => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} ${_installsource} -Restart:$${_restart}",
       onlyif   => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'false\'}).count -eq 0) { exit 1 }",
-      provider => powershell
+      provider => powershell,
+      timeout  => $timeout,
     }
   } elsif ($ensure == 'absent') {
     exec { "remove-feature-${title}":
       command  => "Import-Module ServerManager; Remove-WindowsFeature ${features} -Restart:$${_restart}",
       onlyif   => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'true\'}).count -eq 0) { exit 1 }",
-      provider => powershell
+      provider => powershell,
+      timeout  => $timeout,
     }
   }
 }
