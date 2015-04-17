@@ -3,10 +3,6 @@ require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet_blacksmith/rake_tasks'
 
-if ENV['PUPPET_GEM_VERSION'] =~ /3.4/ && ENV['RUBY_VERSION'] !~ /1.8/
-  require 'puppet-doc-lint/rake_task'
-end
-
 PuppetLint.configuration.fail_on_warnings
 PuppetLint.configuration.relative = true
 

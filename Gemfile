@@ -10,10 +10,6 @@ group :development, :test do
     gem 'celluloid', '0.11.1'
   end
 
-  if ENV['PUPPET_GEM_VERSION'] =~ /3.4/ && ENV['RUBY_VERSION'] !~ /1.8/
-    gem 'puppet-doc-lint', :require => false
-  end
-
   gem 'rake',                                                                    :require => false
   gem 'puppet-lint',                                                             :require => false
   gem 'rspec-puppet',
@@ -22,8 +18,10 @@ group :development, :test do
     :require => false
   gem 'puppet-syntax',                                                           :require => false
   gem 'puppetlabs_spec_helper',                                                  :require => false
-  gem 'rspec',                                                                   :require => false
-  gem 'beaker',                                                                  :require => false
+  gem 'rspec', '2.99.0',                                                         :require => false
+  gem 'beaker',
+    :git => 'https://github.com/puppetlabs/beaker/',
+    :require => false
   gem 'beaker-rspec',                                                            :require => false
   gem 'serverspec',                                                              :require => false
   gem 'specinfra',                                                               :require => false
