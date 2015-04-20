@@ -4,11 +4,33 @@ require 'winrm'
 
 hosts.each do |host|
   
-	if host['platform'] =~ /windows/
+  if host['platform'] =~ /windows/
     include Serverspec::Helper::Windows
     include Serverspec::Helper::WinRM
+
+    # This hack to install .net 3.5 exists because .net 3.5 has to be installed on 2012 and 2012 R2
+    # in order for puppet to install
+    # 
+    # @see PUP-1951
+    # @see PUP-3965
+    if host.to_s =~ /2012/
+      DOTNET_HACK = <<-EOF.gsub!(/\n+/, '').gsub!(/^\s+/, '')
+      $webclient = New-Object System.Net.WebClient ;
+      $webclient.DownloadFile('https://googledrive.com/host/0B4_Bou5W3VsSfjRmeTBaak1Da2ZtVE95M25teWlfa0Y1NEVEYlBHNGV3S3liQTlWNTBGR0E/sxs.zip','C:\\Windows\\Temp\\sxs.zip') ;
+      Add-Type -Assembly 'System.IO.Compression.FileSystem' ;
+      [System.IO.Compression.ZipFile]::ExtractToDirectory('C:\\Windows\\Temp\\sxs.zip', 'C:\\Windows\\Temp\\sxs') ;
+      Install-WindowsFeature Net-Framework-Core -source C:\\Windows\\Temp\\sxs ;
+      shutdown /r /t 0
+      EOF
+
+      on host, powershell(DOTNET_HACK)
+      sleep(30)
+      host.close
+      sleep(10)
+      host.connection
+    end
   end
-  
+
 	version = ENV['PUPPET_GEM_VERSION'] || '3.7.5'
 	install_puppet(:version => version)
 end
