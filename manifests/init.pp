@@ -97,7 +97,7 @@ define windowsfeature (
   }
 
   # Windows 2008 R2 and newer required http://technet.microsoft.com/en-us/library/ee662309.aspx
-  if $::kernelversion !~ /^(6\.(1|2|3))/ { fail ("${module_name} requires Windows 2008 R2 or newer") }
+  if $::kernelversion !~ /^(10|6\.(1|2|3))/ { fail ("${module_name} requires Windows 2008 R2 or newer") }
 
   # from Windows 2012 'Add-WindowsFeature' has been replaced with 'Install-WindowsFeature' http://technet.microsoft.com/en-us/library/ee662309.aspx
   if ($ensure == 'present') {
