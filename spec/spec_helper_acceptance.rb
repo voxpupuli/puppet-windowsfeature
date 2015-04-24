@@ -3,14 +3,14 @@ require 'beaker-rspec/helpers/serverspec'
 require 'winrm'
 
 hosts.each do |host|
-  
+
   if host['platform'] =~ /windows/
     include Serverspec::Helper::Windows
     include Serverspec::Helper::WinRM
 
     # This hack to install .net 3.5 exists because .net 3.5 has to be installed on 2012 and 2012 R2
     # in order for puppet to install
-    # 
+    #
     # @see PUP-1951
     # @see PUP-3965
     if host.to_s =~ /2012/
@@ -31,16 +31,16 @@ hosts.each do |host|
     end
   end
 
-	version = ENV['PUPPET_GEM_VERSION'] || '3.7.5'
-	install_puppet(:version => version)
+  version = ENV['PUPPET_GEM_VERSION'] || '3.7.5'
+  install_puppet(:version => version)
 end
 
 RSpec.configure do |c|
   proj_root = File.expand_path(File.join(File.dirname(__FILE__), '..'))
 
-	c.formatter = :documentation
+  c.formatter = :documentation
 
-	c.before :suite do
+  c.before :suite do
 
     GEOTRUST_GLOBAL_CA = <<-EOM
     -----BEGIN CERTIFICATE-----
@@ -65,25 +65,25 @@ RSpec.configure do |c|
     -----END CERTIFICATE-----
     EOM
 
-		hosts.each do |host|
-			c.host = host
-      
-      if host['platform'] =~ /windows/
-				endpoint = "http://127.0.0.1:5985/wsman"
-				c.winrm = ::WinRM::WinRMWebService.new(endpoint, :ssl, :user => 'vagrant', :pass => 'vagrant', :basic_auth_only => true)
-				c.winrm.set_timeout 300
-		  end
-      
-			path = (File.expand_path(File.dirname(__FILE__)+'/../')).split('/')
-			name = path[path.length-1].split('-')[1]
+    hosts.each do |host|
+      c.host = host
 
-			copy_module_to(host, :source => proj_root, :module_name => name)
+      if host['platform'] =~ /windows/
+        endpoint = "http://127.0.0.1:5985/wsman"
+        c.winrm = WinRM::WinRMWebService.new(endpoint, :ssl, :user => 'vagrant', :pass => 'vagrant', :basic_auth_only => true)
+        c.winrm.set_timeout 300
+      end
+
+      path = (File.expand_path(File.dirname(__FILE__)+'/../')).split('/')
+      name = path[path.length-1].split('-')[1]
+
+      copy_module_to(host, :source => proj_root, :module_name => name)
 
       install_cert_on_windows(host, 'geotrustglobal', GEOTRUST_GLOBAL_CA) 
 
-			on host, puppet('module','install', "puppetlabs-stdlib"), { :acceptable_exit_codes => [0] }
-			on host, puppet('module','install', "puppetlabs-powershell"), { :acceptable_exit_codes => [0] }
-	    
-	  end
+      on host, puppet('module','install', "puppetlabs-stdlib"), { :acceptable_exit_codes => [0] }
+      on host, puppet('module','install', "puppetlabs-powershell"), { :acceptable_exit_codes => [0] }
+
+    end
   end
 end

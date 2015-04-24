@@ -19,13 +19,11 @@ group :development, :test do
   gem 'puppet-syntax',                                                           :require => false
   gem 'puppetlabs_spec_helper',                                                  :require => false
   gem 'rspec', '2.99.0',                                                         :require => false
-  gem 'beaker',
-    :git => 'https://github.com/puppetlabs/beaker/',
-    :require => false
+  gem 'beaker', '2.10.0',                                                        :require => false
   gem 'beaker-rspec',                                                            :require => false
   gem 'serverspec',                                                              :require => false
   gem 'specinfra',                                                               :require => false
-  gem 'winrm',                                                                   :require => false
+  gem 'winrm', '1.3.2',                                                          :require => false
   gem 'travis',                                                                  :require => false
   gem 'travis-lint',                                                             :require => false
   gem 'vagrant-wrapper',                                                         :require => false
