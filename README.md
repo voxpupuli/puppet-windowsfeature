@@ -17,7 +17,7 @@
 
 The windowsfeature module is a small define that allows you to install/remove windows features.
 
-[![Build Status](https://travis-ci.org/opentable/puppet-windowsfeature.png?branch=master)](https://travis-ci.org/opentable/puppet-windowsfeature)
+[![Build Status](https://travis-ci.org/puppet-community/puppet-windowsfeature.png?branch=master)](https://travis-ci.org/puppet-community/puppet-windowsfeature)
 
 ##Module Description
 
