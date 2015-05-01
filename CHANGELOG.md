@@ -1,3 +1,12 @@
+##2015-05-01 - Release 1.1.0
+###Summary
+
+  A few small features in this release. First release under the new puppet-community namespace
+
+####Features
+
+- added new timeout `parameter` for features that take longer than the default 300 seconds to complete.
+- added support for kernelversion 10 for people deploying on Windows 10
 
 ##2014-10-13 - Release 1.0.0
 ###Summary
@@ -6,13 +15,13 @@
 
 ####Features
 
- - adding source paramater
+ - adding `source` paramater
  - updating documentation
 
 ##2014-08-14 - Release 0.2.0
 ###Summary
 
-  Small release to bump stlib dependency to be 4.0 minimum
+  Small release to bump stdlib dependency to be 4.0 minimum
 
 ##2014-04-14 - Release 0.1.2
 ###Summary
@@ -36,7 +45,7 @@
 
 ####Features
 
-  - added $includemanagementtools and $includesubfeatures parameters
+  - added `includemanagementtools` and `includesubfeatures` parameters
 
 ####Bugfixes
 
