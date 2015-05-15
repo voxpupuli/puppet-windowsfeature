@@ -74,6 +74,16 @@ describe 'windowsfeature', :type => :define do
               'provider' => 'powershell'
             })}
           end
+
+          context 'when adding mutliple features' do
+            let(:params) {{:feature_name => ['Web-WebServer','Web-Server']}}
+            it { should contain_exec('add-feature-NET-HTTP-Activation').with(
+                          {
+                            'command' => "Import-Module ServerManager; Add-WindowsFeature @('Web-WebServer','Web-Server')    -Restart:$false",
+                            'onlyif' => "Import-Module ServerManager; if (@(Get-WindowsFeature @('Web-WebServer','Web-Server') | ?{$_.Installed -match 'false'}).count -eq 0) { exit 1 }",
+                            'provider' => 'powershell'
+                          })}
+          end
         end
       end
     end
