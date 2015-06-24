@@ -30,7 +30,6 @@ hosts.each do |host|
   install_puppet(version: version)
   install_cert_on_windows(host, 'geotrustglobal', GEOTRUST_GLOBAL_CA)
   on host, puppet('module', 'install', 'puppetlabs-stdlib')
-  on host, puppet('module', 'install', 'puppetlabs-powershell')
 end
 
 RSpec.configure do |c|
