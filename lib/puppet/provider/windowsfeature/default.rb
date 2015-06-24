@@ -41,6 +41,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
         uninstall_cmd = 'Remove-WindowsFeature'
     end
     options = []
+    uninstall_options = []
     if resource['installmanagementtools'] == true
       case Facter.value(:kernelmajversion)
         when /6.1/
@@ -53,19 +54,19 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
       options.push('-IncludeAllSubFeature')
     end
     if resource['restart'] == true
-      options.push('-Restart true')
-    else
-      options.push('-Restart false')
+      options.push('-Restart')
+      uninstall_options.push('-Restart')
     end
     if resource['source']
       options.push("-Source #{resource['source']}")
     end
-      
-    Puppet.debug("Install-WindowsFeature #{resource['name']} #{options.join(' ')}")
-    ps("'#{install_cmd}',resource['name'],options.join(' ')")
+    psopts = options.join(' ')
+#    Puppet.debug("Install-WindowsFeature #{resource['name']} #{options.join(' ')}")
+    ps(install_cmd,resource['name'],psopts)
   end
 
   def destroy
-    ps("'#{uninstall_cmd}',resource['name'],'-Restart #{resource['restart']}'")
+    psopts = uninstall_options.join(' ')
+    ps(uninstall_cmd,resource['name'],psopts)
   end
 end
