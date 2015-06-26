@@ -1,7 +1,15 @@
 require 'json'
 Puppet::Type.type(:windowsfeature).provide(:default) do
   
-  commands :ps => 'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe'
+  commands :ps => 
+    if File.exists?("#{ENV['SYSTEMROOT']}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe")
+      "#{ENV['SYSTEMROOT']}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe"
+    elsif File.exists?("#{ENV['SYSTEMROOT']}\\system32\\WindowsPowershell\\v1.0\\powershell.exe")
+      "#{ENV['SYSTEMROOT']}\\system32\\WindowsPowershell\\v1.0\\powershell.exe"
+    else
+      'powershell.exe'
+    end
+
   confine :kernel => :windows
 
   def self.instances
