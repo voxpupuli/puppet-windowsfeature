@@ -12,4 +12,9 @@ describe 'windowsfeature' do
       expect(apply_manifest(pp, :catch_failures => true).exit_code).to be_zero
     end
   end
+
+
+  describe windows_feature('as-net-framework') do
+    it { should be_installed.by('powershell') }
+  end
 end
