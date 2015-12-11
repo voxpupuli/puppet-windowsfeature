@@ -32,6 +32,12 @@ group :development do
 end
 
 group :system_tests do
-  gem "beaker", :git => 'https://github.com/petems/beaker-windows.git'
-  gem "beaker-rspec"
+  gem 'winrm'
+  gem "beaker",
+    :git => 'https://github.com/petems/beaker-windows.git',
+    :ref => '38227e3bec946dbd52ac4aece8d28af360a33cc4'
+  gem "beaker-rspec",
+    :git => 'https://github.com/petems/beaker-rspec-windows.git',
+    :ref => 'd96cff5fc937efe1dca03c6ea3c236bf4c7337ab'
+  gem 'vagrant-wrapper'
 end
