@@ -27,7 +27,7 @@ Windows Server 2012 to add/remove Windows features.
 For a list of the windows features you can install, please visit this [technet article](http://technet.microsoft.com/en-us/library/cc732757.aspx)
 
 ##Setup
-###What download_file affects
+###What windowsfeature affects
 * Installs windows features (and optionally corresponding tools)
 
 ###Setup Requirements
