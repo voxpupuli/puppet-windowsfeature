@@ -2,7 +2,7 @@ require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'winrm'
 
-GEOTRUST_GLOBAL_CA = <<-EOM
+GEOTRUST_GLOBAL_CA = <<-EOM.freeze
 -----BEGIN CERTIFICATE-----
 MIIDVDCCAjygAwIBAgIDAjRWMA0GCSqGSIb3DQEBBQUAMEIxCzAJBgNVBAYTAlVT
 MRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMRswGQYDVQQDExJHZW9UcnVzdCBHbG9i
@@ -27,10 +27,10 @@ EOM
 
 hosts.each do |host|
   version = ENV['PUPPET_GEM_VERSION'] || '3.8.3'
-  install_puppet(:version => version)
+  install_puppet(version: version)
   install_cert_on_windows(host, 'geotrustglobal', GEOTRUST_GLOBAL_CA)
-  on host, puppet('module','install', "puppetlabs-stdlib")
-  on host, puppet('module','install', "puppetlabs-powershell")
+  on host, puppet('module', 'install', 'puppetlabs-stdlib')
+  on host, puppet('module', 'install', 'puppetlabs-powershell')
 end
 
 RSpec.configure do |c|
@@ -39,9 +39,9 @@ RSpec.configure do |c|
   c.formatter = :documentation
 
   c.before :suite do
-    path = (File.expand_path(File.dirname(__FILE__)+'/../')).split('/')
-    name = path[path.length-1].split('-')[1]
+    path = File.expand_path(File.dirname(__FILE__) + '/../').split('/')
+    name = path[path.length - 1].split('-')[1]
     # Install module and dependencies
-    puppet_module_install(:source => proj_root, :module_name => name)
+    puppet_module_install(source: proj_root, module_name: name)
   end
 end
