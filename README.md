@@ -1,6 +1,6 @@
 # puppet-windowsfeature
 
-####Table of Contents
+#### Table of Contents
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
@@ -13,27 +13,30 @@
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 
-##Overview
+## Overview
 
 The windowsfeature module is a small define that allows you to install/remove windows features.
 
-[![Build Status](https://travis-ci.org/puppet-community/puppet-windowsfeature.png?branch=master)](https://travis-ci.org/puppet-community/puppet-windowsfeature)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-windowsfeature.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-windowsfeature)
 
-##Module Description
+## Module Description
 
 The windowsfeature module introduces a small define `windowsfeature` that uses the ServerManager API that comes with Windows Server 2008 R2 and
 Windows Server 2012 to add/remove Windows features.
 
 For a list of the windows features you can install, please visit this [technet article](http://technet.microsoft.com/en-us/library/cc732757.aspx)
 
-##Setup
-###What windowsfeature affects
+## Setup
+
+### What windowsfeature affects
+
 * Installs windows features (and optionally corresponding tools)
 
-###Setup Requirements
+### Setup Requirements
+
 * windowsfeature makes use of Powershell so you will need to have at least version 2.0 installed in order to use this module.
 
-##Begining
+## Beginning
 
 To install a single windows feature such as dotnet 3.5:
 
@@ -75,43 +78,50 @@ To install a feature and that requires a restart:
       restart => 'true'
     }
 
+## Usage
 
-##Usage
+### Classes and Defined Types
 
-###Classes and Defined Types
-
-####Defined Type: `windowsfeature`
+#### Defined Type: `windowsfeature`
 
 **Parameters within `windowsfeature`:**
-#####`ensure`
+##### `ensure`
+
 Controls if the Windows feature is installed. Can be `present` or `absent`.
 
-#####`feature_name`
+##### `feature_name`
+
 Provides the name of the feature that you want to install if this differs from the resource title.
 
-#####`installmanagementtools`
+##### `installmanagementtools`
+
 Specifies that all applicable management tools should be installed for the given feature. Defaults to `false`
 
-#####`installsubfeatures`
+##### `installsubfeatures`
+
 Specifies that all subordinate features of this feature are also installed. Defaults to `false`
 
-#####`restart`
+##### `restart`
+
 Specifies that when installing the windows feature it should perform and restart automatically.
 
-#####`source`
+##### `source`
+
 Specifies the location of the feature files. This may be a network location or a path to the specific wim file.
 
-#####`timeout`
+##### `timeout`
+
 Specifies the timeout in seconds for the feature installation. Use this if the feature takes longer than 300 seconds to complete.
 
-##Reference
+## Reference
 
+### Defined Types
 
-###Defined Types
-####Public Types
+#### Public Types
+
 * [`windowsfeature`](#defined-windowsfeature): Install or remove a given windows feature
 
-##Limitations
+## Limitations
 
 This module is tested on the following platforms:
 
@@ -122,9 +132,10 @@ This module is tested on the following platforms:
 
 It is tested with the OSS version of Puppet only.
 
-###Known issues
+### Known issues
+
 * Specifying installmanagementtools and/or installsubfeatures when a feature is already installed will not install said management tools or sub features.
 
-###Contributing
+### Contributing
 
 Please read CONTRIBUTING.md for full details on contributing to this project.

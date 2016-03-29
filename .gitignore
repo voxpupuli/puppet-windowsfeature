@@ -5,6 +5,7 @@ spec/fixtures/
 .vagrant/
 .bundle/
 coverage/
-*.iml
-.idea/
 log/
+.idea/
+*.iml
+.*.sw
