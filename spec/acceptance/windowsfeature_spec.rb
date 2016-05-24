@@ -4,7 +4,9 @@ describe 'windowsfeature' do
   context 'windows feature should be installed' do
     it 'should install .net 3.5 feature' do
       pp = <<-PP
-        windowsfeature { 'as-net-framework': }
+        windowsfeature { 'as-net-framework':
+          ensure => present,
+        }
       PP
 
       apply_manifest(pp, catch_failures: true)
