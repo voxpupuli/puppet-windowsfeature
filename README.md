@@ -21,8 +21,7 @@ The windowsfeature module is a small define that allows you to install/remove wi
 
 ## Module Description
 
-The windowsfeature module introduces a small define `windowsfeature` that uses the ServerManager API that comes with Windows Server 2008 R2 and
-Windows Server 2012 to add/remove Windows features.
+The windowsfeature module introduces a new `windowsfeature` type uses the ServerManager API that comes with Windows Server 2008 R2 onward to add/remove Windows features.
 
 For a list of the windows features you can install, please visit this [technet article](http://technet.microsoft.com/en-us/library/cc732757.aspx)
 
@@ -40,41 +39,37 @@ For a list of the windows features you can install, please visit this [technet a
 
 To install a single windows feature such as dotnet 3.5:
 
-    windowsfeature { 'NET-Framework-Core': }
+    windowsfeature { 'NET-Framework-Core':
+      ensure => present,
+    }
 
 To install several windows features as part of a large application such IIS:
 
-    windowsfeature { 'IIS':
-      feature_name => [
-        'Web-Server',
-        'Web-WebServer',
-        'Web-Asp-Net45',
-        'Web-ISAPI-Ext',
-        'Web-ISAPI-Filter',
-        'NET-Framework-45-ASPNET',
-        'WAS-NET-Environment',
-        'Web-Http-Redirect',
-        'Web-Filtering',
-        'Web-Mgmt-Console',
-        'Web-Mgmt-Tools'
-      ]
+
+    $iis_features = ['Web-Server','Web-WebServer','Web-Asp-Net45','Web-ISAPI-Ext','Web-ISAPI-Filter','NET-Framework-45-ASPNET','WAS-NET-Environment','Web-Http-Redirect','Web-Filtering','Web-Mgmt-Console','Web-Mgmt-Tools']
+
+    windowsfeature { $iis_features:
+      ensure => present,
     }
 
 To install any associated management tools:
 
     windowsfeature { 'Web-WebServer':
+      ensure => present,
       installmanagementtools => true
     }
 
 To install all subfeatures:
 
     windowsfeature { 'Web-WebServer':
+      ensure             => present,
       installsubfeatures => true
     }
 
 To install a feature and that requires a restart:
 
     windowsfeature {'RDS-RD-Server':
+      ensure             => present,
       restart => 'true'
     }
 
@@ -82,44 +77,73 @@ To install a feature and that requires a restart:
 
 ### Classes and Defined Types
 
-#### Defined Type: `windowsfeature`
+##Reference
 
-**Parameters within `windowsfeature`:**
-##### `ensure`
+### Types
 
-Controls if the Windows feature is installed. Can be `present` or `absent`.
+* `windowsfeature`: Installs a Windows Feature
 
-##### `feature_name`
+###Parameters
 
-Provides the name of the feature that you want to install if this differs from the resource title.
+####Type: windowsfeature
 
-##### `installmanagementtools`
+#####`ensure`
+Specifies the basic state of the resource. Valid values are 'present', 'absent'.
 
-Specifies that all applicable management tools should be installed for the given feature. Defaults to `false`
+#####`name`
+*Required* This name of the feature you want to manage
 
-##### `installsubfeatures`
+#####`installmanagementtools`
+*Optional* Specifies that all applicable management tools of the roles, role services, or features specified by the Name parameter should be installed. Note: Although management tools are installed by default when you are installing features by using the , management tools are not installed by default when you install features by using the Install-WindowsFeature cmdlet; this parameter must be added to install management tools.
 
-Specifies that all subordinate features of this feature are also installed. Defaults to `false`
+#####`installsubfeatures`
+*Optional* Specifies that all subordinate role services, and all subfeatures of parent roles, role services, or features specified by the Name parameter should be installed.
 
-##### `restart`
+#####`restart`
+*Optional* Specifies that the target system is restarted automatically, if a restart is required by the installation process for the specified roles or features.
 
-Specifies that when installing the windows feature it should perform and restart automatically.
+#####`source`
+*Optional* Specify the location of an installation source. The source must be from the exact same version of Windows for the reinstallation to work. Without this parameter, PowerShell will use Windows Update by default to look for an installation source
 
-##### `source`
+##Upgrading from 1.0.1 Release
 
-Specifies the location of the feature files. This may be a network location or a path to the specific wim file.
+Previously, the windows features were managed by individual execs:
 
-##### `timeout`
+```puppet
+exec { "add-feature-${title}":
+  command  => "Import-Module ServerManager; ${command} ${features} ${_installmanagementtools} ${_installsubfeatures} ${_installsource} -Restart:$${_restart}",
+  onlyif   => "Import-Module ServerManager; if (@(Get-WindowsFeature ${features} | ?{\$_.Installed -match \'false\'}).count -eq 0) { exit 1 }",
+  provider => powershell,
+  timeout  => $timeout,
+}
+```
 
-Specifies the timeout in seconds for the feature installation. Use this if the feature takes longer than 300 seconds to complete.
+This lead to long execution times when managing a large amount of features, even after features were installed, as the Powershell would have to run the onlyif command for every check.
 
-## Reference
+The new 2.0.0 release uses native types and providers, which speeds up the time as it can just compare the resources on the machine with the results from Get-WindowsFeature.
 
-### Defined Types
+For example, enabling all the Windows features for a standard IIS setuo after features are installed (ie. an idempotent run):
 
-#### Public Types
+1.0.0 release:
+```
+win-2012R2-std 01:29:30$ puppet apply --verbose --detailed-exitcodes C:\Windows\Temp\apply_manifest.pp.8276
+  Info: Loading facts
+  Notice: Compiled catalog for win-2012r2-std.home in environment production in 0.44 seconds
+  Info: Applying configuration version '1464136176'
+  Notice: Finished catalog run in 15.30 seconds
+```
 
-* [`windowsfeature`](#defined-windowsfeature): Install or remove a given windows feature
+```
+win-2012R2-std 01:29:30$ puppet apply --verbose --detailed-exitcodes C:\Windows\Temp\apply_manifest.pp.8276
+  Info: Loading facts
+  Notice: Compiled catalog for win-2012r2-std.home in environment production in 0.44 seconds
+  Info: Applying configuration version '1464136176'
+  Notice: Finished catalog run in 3.34 seconds
+```
+
+So that's a third of the original runs time! And this would only increase with larger amounts of features, as the more features to check, the longer it would take.
+
+Another benefit is this module now has less dependancies on other modules, as it's all native to the module now.
 
 ## Limitations
 

@@ -1,6 +1,6 @@
 {
   "name": "puppet-windowsfeature",
-  "version": "1.1.0",
+  "version": "2.0.0",
   "author": "puppet",
   "license": "Apache-2.0",
   "summary": "A module that will turn windows features on or off for Windows Server 2008 and above",
@@ -15,7 +15,5 @@
     }
   ],
   "dependencies": [
-    { "name": "puppetlabs/stdlib", "version_requirement": ">=3.0.0 <5.0.0" },
-    { "name": "puppetlabs/powershell", "version_requirement": ">= 1.0.1" }
   ]
 }
