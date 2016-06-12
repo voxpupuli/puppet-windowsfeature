@@ -13,6 +13,5 @@ RSpec.configure do |c|
     macaddress: 'AA:AA:AA:AA:AA:AA'
   }
 end
-require 'rspec/mocks/standalone'
 require 'spec_helper_methods'
 # vim: syntax=ruby
