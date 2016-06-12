@@ -22,7 +22,7 @@ describe Puppet::Type.type(:windowsfeature) do
       :installmanagementtools,
       :installsubfeatures,
       :restart,
-      :source,
+      :source
     ]
 
     params.each do |param|
