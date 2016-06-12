@@ -14,4 +14,5 @@ RSpec.configure do |c|
   }
 end
 require 'rspec/mocks/standalone'
+require 'spec_helper_methods'
 # vim: syntax=ruby
