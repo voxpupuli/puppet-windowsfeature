@@ -10,8 +10,6 @@ Gemfile:
       - gem: winrm
         version: '1.8.1'
       - gem: beaker-puppet_install_helper
-spec/spec_helper_acceptance.rb:
-  windows: true
 spec/acceptance/nodesets/centos-511-x64.yml:
   unmanaged: true
 spec/acceptance/nodesets/centos-66-x64-pe.yml:
@@ -30,3 +28,5 @@ spec/acceptance/nodesets/debian-82-x64.yml:
   unmanaged: true
 .travis.yml:
   secure: "hz3gZgI7pMtV6H4m2T1Y418bJ0puwSir2j7oWdkDjB0YjSMwHERvQbbxxfLa47Y/sN2RKo7f5fzMFudriqkw75zyUtnpe4UWITVmQ8DkOQc/G0xb2aCOdenV2CEWZ1fQloL2/n5dYlMgw22iXgb2ARCjhgLYUZG2A9XDKQaQSUk="
+spec/spec_helper.rb:
+  spec_overrides: "require 'rspec/mocks/standalone'"
