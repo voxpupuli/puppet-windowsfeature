@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'windowsfeature' do
   context 'windows feature should be installed' do
-    it 'should install .net 3.5 feature' do
+    it 'installs .net 3.5 feature' do
       pp = <<-PP
         windowsfeature { 'as-net-framework':
           ensure => present,

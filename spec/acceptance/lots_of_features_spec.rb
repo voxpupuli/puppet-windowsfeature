@@ -2,7 +2,7 @@ require 'spec_helper_acceptance'
 
 describe 'windowsfeature' do
   context 'lots of features at once' do
-    it 'should be installed and not take too long' do
+    it 'is installed and not take too long' do
       pp = <<-PP
         $windowsfeatures = [
           'Web-Filtering',
