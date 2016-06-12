@@ -13,7 +13,7 @@ describe Puppet::Type.type(:windowsfeature) do
     @class.any_instance.stubs(:provider).returns @provider
   end
 
-  it 'should have :name as its keyattribute' do
+  it 'has :name as its keyattribute' do
     expect(@class.key_attributes).to eq([:name])
   end
 
