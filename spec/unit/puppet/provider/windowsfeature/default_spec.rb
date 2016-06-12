@@ -3,20 +3,21 @@ require 'spec_helper'
 provider_class = Puppet::Type.type(:windowsfeature).provider(:default)
 
 describe provider_class do
-  let(:resource) { Puppet::Type.type(:windowsfeature).new(
-    title: 'feature-name',
-    provider: described_class.name
+  let :resource do
+    Puppet::Type.type(:windowsfeature).new(
+      title: 'feature-name',
+      provider: described_class.name
   )
-  }
+  end
 
   let(:provider) { resource.provider }
 
   let(:instance) { provider.class.instances.first }
 
-  let(:windows_feature_json) {
+  let(:windows_feature_json) do
     # Read big JSON file from a base 2012R2 run
     fixture('windows-features')
-  }
+  end
 
   before :each do
     Facter.stubs(:value).with(:kernel).returns(:windows)
