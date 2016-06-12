@@ -16,7 +16,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
   def self.instances
     features = JSON.parse(ps('Get-WindowsFeature | ConvertTo-JSON'))
-    features.collect do |feature|
+    features.map do |feature|
       name = feature['Name'].downcase
       installed = feature['InstallState']
       if installed == 1
