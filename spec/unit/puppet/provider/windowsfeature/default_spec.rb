@@ -72,38 +72,40 @@ describe provider_class do
       end
     end
     context 'with installmanagementtools' do
-      let(:resource) { Puppet::Type.type(:windowsfeature).new(
+      let(:resource) do
+        Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           installmanagementtools: true,
           provider: described_class.name
         )
-      }
+      end
 
       it 'fails when kernelmajversion 6.1' do
         Facter.expects(:value).twice.with(:kernelmajversion).returns('6.1')
-        expect{provider.create}.to raise_error(Puppet::Error,/installmanagementtools can only be used with Windows 2012 and above/)
+        expect { provider.create }.to raise_error(Puppet::Error, %r{installmanagementtools can only be used with Windows 2012 and above})
       end
 
-      ['6.2','6.3','10'].each do | supported_kernel |
-        it "runs Install-WindowsFeature with -IncludeManagementTools" do
+      ['6.2', '6.3', '10'].each do |supported_kernel|
+        it 'runs Install-WindowsFeature with -IncludeManagementTools' do
           Facter.expects(:value).twice.with(:kernelmajversion).returns(supported_kernel)
-          Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name','-IncludeManagementTools').returns('')
+          Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name', '-IncludeManagementTools').returns('')
           provider.create
         end
       end
     end
 
     context 'with installsubfeatures' do
-      let(:resource) { Puppet::Type.type(:windowsfeature).new(
+      let(:resource) do
+        Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           installsubfeatures: true,
           provider: described_class.name
         )
-      }
+      end
 
-      it "runs Install-WindowsFeature with -IncludeAllSubFeature" do
+      it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name','-IncludeAllSubFeature').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name', '-IncludeAllSubFeature').returns('')
         provider.create
       end
     end
@@ -125,14 +127,15 @@ describe provider_class do
       end
     end
     context 'with restart' do
-      let(:resource) { Puppet::Type.type(:windowsfeature).new(
+      let(:resource) do
+        Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           restart: true,
           provider: described_class.name
         )
-      }
+      end
 
-      it "runs Install-WindowsFeature with -IncludeAllSubFeature" do
+      it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
         Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Remove-WindowsFeature', 'feature-name', '-Restart').returns('')
         provider.destroy
