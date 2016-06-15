@@ -17,7 +17,7 @@ Puppet::Type.newtype(:windowsfeature) do
     # validate is bool
     validate do |value|
       unless value == true || value == false
-        raise Puppet::Error, 'Parameter installmanagementtools must be true or false'
+        raise Puppet::Error, 'Parameter installsubfeatures must be true or false'
       end
     end
   end
@@ -25,7 +25,7 @@ Puppet::Type.newtype(:windowsfeature) do
   newparam(:restart) do
     validate do |value|
       unless value == true || value == false
-        raise Puppet::Error, 'Parameter installmanagementtools must be true or false'
+        raise Puppet::Error, 'Parameter restart must be true or false'
       end
     end
   end
