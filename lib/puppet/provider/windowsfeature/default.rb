@@ -16,7 +16,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
   def self.instances
     features = JSON.parse(ps('Get-WindowsFeature | ConvertTo-JSON'))
-    features.collect do |feature|
+    features.map do |feature|
       name = feature['Name'].downcase
       installed = feature['InstallState']
       if installed == 1
@@ -43,7 +43,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
   def create
     install_cmd = case Facter.value(:kernelmajversion)
-                  when /6.1/
+                  when %r{6.1}
                     'Import-Module ServerManager; Add-WindowsFeature'
                   else
                     'Install-WindowsFeature'
@@ -54,9 +54,9 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
     if resource['installmanagementtools'] == true
       case Facter.value(:kernelmajversion)
-      when /6.1/
+      when %r{6.1}
         raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'
-      when /6.2|6.3|10/
+      when %r{6.2|6.3|10}
         options.push('-IncludeManagementTools')
       end
     end
@@ -76,7 +76,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
   def destroy
     uninstall_cmd = case Facter.value(:kernelmajversion)
-                    when /6.1/
+                    when %r{6.1}
                       'Import-Module ServerManager; Remove-WindowsFeature'
                     else
                       'Remove-WindowsFeature'

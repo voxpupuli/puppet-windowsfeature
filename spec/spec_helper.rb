@@ -1,23 +1,17 @@
-# SimpleCov does not run on Ruby 1.8.7
-unless RUBY_VERSION.to_f < 1.9
-  require 'simplecov'
-  SimpleCov.formatters = [
-    SimpleCov::Formatter::HTMLFormatter,
-  ]
-  SimpleCov.start do
-    coverage_dir('coverage/')
-    add_filter('/spec/')
-  end
-end
-
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-facts'
-require 'rspec/mocks/standalone'
+include RspecPuppetFacts
 
-def project_path
-  File.expand_path('../..', __FILE__)
+RSpec.configure do |c|
+  c.default_facts = {
+    concat_basedir: '/tmp',
+    is_pe: false,
+    selinux_config_mode: 'disabled',
+    puppetversion: Puppet.version,
+    facterversion: Facter.version,
+    ipaddress: '172.16.254.254',
+    macaddress: 'AA:AA:AA:AA:AA:AA'
+  }
 end
-
-def fixture(fixture_name, format = 'json')
-  IO.binread(project_path + "/spec/fixtures/#{fixture_name}.#{format}")
-end
+require 'spec_helper_methods'
+# vim: syntax=ruby

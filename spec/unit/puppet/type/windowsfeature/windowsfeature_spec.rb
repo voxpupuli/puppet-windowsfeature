@@ -3,18 +3,16 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:windowsfeature) do
-  before do
-    @class = described_class
-    @provider_class = @class.provide(:fake) { mk_resource_methods }
-    @provider = @provider_class.new
-    @resource = stub 'resource', resource: nil, provider: @provider
-
-    @class.stubs(:defaultprovider).returns @provider_class
-    @class.any_instance.stubs(:provider).returns @provider
+  let :provider_class do
+    described_class.provide(:fake) { mk_resource_methods }
   end
-
-  it 'should have :name as its keyattribute' do
-    expect(@class.key_attributes).to eq([:name])
+  let(:provider) { provider_class.new }
+  before do
+    described_class.stubs(:defaultprovider).returns provider_class
+    described_class.stubs(:provider).returns provider
+  end
+  it 'has :name as its keyattribute' do
+    expect(described_class.key_attributes).to eq([:name])
   end
 
   describe 'when validating attributes' do
@@ -22,12 +20,12 @@ describe Puppet::Type.type(:windowsfeature) do
       :installmanagementtools,
       :installsubfeatures,
       :restart,
-      :source,
+      :source
     ]
 
     params.each do |param|
       it "should have a #{param} parameter" do
-        expect(@class.attrtype(param)).to eq(:param)
+        expect(described_class.attrtype(param)).to eq(:param)
       end
     end
   end
