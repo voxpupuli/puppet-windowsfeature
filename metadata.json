@@ -1,19 +1,29 @@
 {
   "name": "puppet-windowsfeature",
-  "version": "2.0.0",
+  "version": "2.0.1-rc0",
   "author": "puppet",
   "license": "Apache-2.0",
   "summary": "A module that will turn windows features on or off for Windows Server 2008 and above",
   "source": "https://github.com/voxpupuli/puppet-windowsfeature",
   "project_page": "https://github.com/voxpupuli/puppet-windowsfeature",
   "issues_url": "https://github.com/voxpupuli/puppet-windowsfeature/issues",
-  "tags": ["windows", "utility", "powershell"],
+  "tags": [
+    "windows",
+    "utility",
+    "powershell"
+  ],
   "operatingsystem_support": [
     {
-    "operatingsystem": "windows",
-    "operatingsystemrelease": ["2008", "2008R2", "2012", "2012R2"]
+      "operatingsystem": "windows",
+      "operatingsystemrelease": [
+        "2008",
+        "2008R2",
+        "2012",
+        "2012R2"
+      ]
     }
   ],
   "dependencies": [
+
   ]
 }
