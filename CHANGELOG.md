@@ -1,3 +1,13 @@
+## 2016-06-16 - Release 2.0.0
+### Summary
+- modulesync with latest voxpupuli settings (#46, #51)
+- Drop of Ruby1.8!
+- Enhanced Unit/Acceptance tests (#47, #53)
+
+### Features
+- windowsfeature as native Type and Provider (#47)
+
+
 ## 2015-05-01 - Release 1.1.0
 ### Summary
 
