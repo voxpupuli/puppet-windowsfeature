@@ -2,7 +2,7 @@
   "name": "puppet-windowsfeature",
   "version": "2.0.1-rc0",
   "author": "puppet",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "summary": "A module that will turn windows features on or off for Windows Server 2008 and above",
   "source": "https://github.com/voxpupuli/puppet-windowsfeature",
   "project_page": "https://github.com/voxpupuli/puppet-windowsfeature",
