@@ -14,14 +14,15 @@ describe provider_class do
 
   let(:instance) { provider.class.instances.first }
 
-  let(:windows_feature_json) do
-    # Read big JSON file from a base 2012R2 run
+  let(:windows_feature_csv) do
+    # Read big CSV file from a base 2012R2 run
     fixture('windows-features')
   end
 
   before :each do
     Facter.stubs(:value).with(:kernel).returns(:windows)
-    provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-JSON').returns(windows_feature_json)
+    Facter.stubs(:value).with(:kernelmajversion).returns('6.2')
+    provider.class.stubs(:ps).with('Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV').returns(windows_feature_csv)
   end
 
   it 'supports resource discovery' do
@@ -52,7 +53,7 @@ describe provider_class do
   describe 'self.instances' do
     it 'returns an array of windows features' do
       features = provider.class.instances.map(&:name)
-      expect(features).to include('ad-certificate', 'fileandstorage-services')
+      expect(features).to include("ad-certificate","fileandstorage-services")
     end
   end
 

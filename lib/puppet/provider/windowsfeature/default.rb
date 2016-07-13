@@ -1,4 +1,4 @@
-require 'json'
+require 'csv'
 Puppet::Type.type(:windowsfeature).provide(:default) do
   # We don't support 1.8.7 officially, but lets be nice and not cause errors
   # rubocop:disable Style/HashSyntax
@@ -13,15 +13,31 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     end
 
   confine :kernel => :windows
-
+  
   def self.instances
-    features = JSON.parse(ps('Get-WindowsFeature | ConvertTo-JSON'))
+    features = Array.new
+    get_cmd = case Facter.value(:kernelmajversion)
+      when %r{6.1}
+        'Import-Module ServerManager; Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
+      else
+        'Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
+      end
+    get_features = ps(get_cmd)
+    csv = CSV.new(get_features,{ :headers => ['name','installed'], :skip_lines => "^#"})
+    csv.each do | row |
+      feature_hash = {
+        "name"      => row["name"].downcase,
+        "installed" => row["installed"].downcase,
+      }
+      features.push(feature_hash)
+    end
+    
     features.map do |feature|
-      name = feature['Name'].downcase
-      installed = feature['InstallState']
-      if installed == 1
+      name = feature['name']
+      installed = feature['installed']
+      if installed == 'true'
         currentstate = :present
-      elsif installed == 0
+      elsif installed == 'false'
         currentstate = :absent
       end
       new(:name => name, :ensure => currentstate)
