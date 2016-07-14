@@ -53,7 +53,7 @@ describe provider_class do
   describe 'self.instances' do
     it 'returns an array of windows features' do
       features = provider.class.instances.map(&:name)
-      expect(features).to include("ad-certificate","fileandstorage-services")
+      expect(features).to include('ad-certificate', 'fileandstorage-services')
     end
   end
 

@@ -23,15 +23,14 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
         'Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
       end
     get_features = ps(get_cmd)
-    csv = CSV.new(get_features,{ :headers => ['name','installed'], :skip_lines => "^#"})
+    csv = CSV.new(get_features,{ :headers => ['name', 'installed']})
     csv.each do | row |
       feature_hash = {
-        "name"      => row["name"].downcase,
-        "installed" => row["installed"].downcase,
+        'name'      => row['name'].downcase,
+        'installed' => row['installed'].downcase
       }
       features.push(feature_hash)
     end
-    
     features.map do |feature|
       name = feature['name']
       installed = feature['installed']
