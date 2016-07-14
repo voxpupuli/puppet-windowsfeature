@@ -13,18 +13,18 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     end
 
   confine :kernel => :windows
-  
+
   def self.instances
-    features = Array.new
+    features = []
     get_cmd = case Facter.value(:kernelmajversion)
-      when %r{6.1}
-        'Import-Module ServerManager; Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
-      else
-        'Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
-      end
+              when %r{6.1}
+                'Import-Module ServerManager; Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
+              else
+                'Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV'
+              end
     get_features = ps(get_cmd)
-    csv = CSV.new(get_features,{ :headers => ['name', 'installed']})
-    csv.each do | row |
+    csv = CSV.new(get_features, :headers => %w(name installed))
+    csv.each do |row|
       feature_hash = {
         'name'      => row['name'].downcase,
         'installed' => row['installed'].downcase
