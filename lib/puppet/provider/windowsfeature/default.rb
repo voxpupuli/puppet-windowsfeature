@@ -18,10 +18,10 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     features = JSON.parse(ps('Get-WindowsFeature | ConvertTo-JSON'))
     features.map do |feature|
       name = feature['Name'].downcase
-      installed = feature['InstallState']
-      if installed == 1
+      installed = feature['Installed']
+      if installed == true
         currentstate = :present
-      elsif installed == 0
+      elsif installed == false
         currentstate = :absent
       end
       new(:name => name, :ensure => currentstate)
