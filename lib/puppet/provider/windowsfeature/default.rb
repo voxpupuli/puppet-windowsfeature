@@ -66,17 +66,18 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     else
       array << "Install-WindowsFeature #{resource[:name]}"
     end
-    array << '-InstallSubFeatures' if @resource[:installsubfeatures]
+    array << '-IncludeAllSubFeature' if @resource[:installsubfeatures]
     array << '-Restart' if @resource[:restart]
     array << "-Source #{resource['source']}" if @resource[:source]
     errormsg = 'installmanagementtools can only be used with Windows 2012 and above'
     if Facter.value(:kernelmajversion) == '6.1'
       raise Puppet::Error, errormsg if @resource[:installmanagementtools]
     else
-      array << '-InstallManagementTools' if @resource[:installmanagementtools]
+      array << '-IncludeManagementTools' if @resource[:installmanagementtools]
     end
+    Puppet.notice array
     Puppet.debug "Powershell create command is '#{array}''"
-    result = ps(array)
+    result = ps(array.join(' '))
     Puppet.debug "Powershell create response was #{result}"
   end
 
@@ -89,7 +90,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     end
     array << '-Restart' if @resource[:restart]
     Puppet.debug "Powershell destroy command is '#{array}''"
-    result = ps(array)
+    result = ps(array.join(' '))
     Puppet.debug "Powershell destroy response was #{result}"
   end
 
