@@ -14,7 +14,7 @@ describe provider_class do
 
   let(:instance) { provider.class.instances.first }
 
-  let(:windows_feature_json) do
+  let(:windows_feature_xml) do
     # Read big XML file from a base 2012R2 run
     fixture('windows-features')
   end

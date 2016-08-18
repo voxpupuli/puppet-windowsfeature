@@ -66,16 +66,18 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     else
       array << "Install-WindowsFeature #{resource[:name]}"
     end
-    array << '-InstallSubFeatures' if @property_flush[:installsubfeatures]
-    array << '-Restart' if @property_flush[:restart]
-    array << "-Source #{resource['source']}" if @property_flush[:source]
+    array << '-InstallSubFeatures' if @resource[:installsubfeatures]
+    array << '-Restart' if @resource[:restart]
+    array << "-Source #{resource['source']}" if @resource[:source]
     errormsg = 'installmanagementtools can only be used with Windows 2012 and above'
     if Facter.value(:kernelmajversion) == '6.1'
-      raise Puppet::Error, errormsg if @property_flush[:installmanagementtools]
+      raise Puppet::Error, errormsg if @resource[:installmanagementtools]
     else
-      array << '-InstallManagementTools' if @property_flush[:installmanagementtools]
+      array << '-InstallManagementTools' if @resource[:installmanagementtools]
     end
-  ps(array)
+    Puppet.debug "Powershell create command is '#{array}''"
+    result = ps(array)
+    Puppet.debug "Powershell create response was #{result}"
   end
 
   def destroy
@@ -83,10 +85,12 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     if Facter.value(:kernelmajversion) == '6.1'
       array << "Import-Module ServerManager; Remove-WindowsFeature #{resource[:name]}"
     else
-      array << "Uninstall-WindowsFeature #resource[:name]"
+      array << "Uninstall-WindowsFeature #{resource[:name]}"
     end
-    array << '-Restart' if @property_flush[:restart]
-    ps(array)
+    array << '-Restart' if @resource[:restart]
+    Puppet.debug "Powershell destroy command is '#{array}''"
+    result = ps(array)
+    Puppet.debug "Powershell destroy response was #{result}"
   end
 
 end
