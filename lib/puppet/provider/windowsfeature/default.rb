@@ -1,7 +1,10 @@
-require 'json'
+require 'rexml/document'
+include REXML
 Puppet::Type.type(:windowsfeature).provide(:default) do
   # We don't support 1.8.7 officially, but lets be nice and not cause errors
   # rubocop:disable Style/HashSyntax
+
+  confine :kernel => :windows
 
   commands :ps =>
     if File.exist?("#{ENV['SYSTEMROOT']}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe")
@@ -11,20 +14,35 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     else
       'powershell.exe'
     end
-
-  confine :kernel => :windows
+  
+  def initialize(value={})
+    super(value)
+    @property_flush = {}
+    @install   = 'Install-WindowsFeature'
+  end
 
   def self.instances
-    features = JSON.parse(ps('Get-WindowsFeature | ConvertTo-JSON'))
+    features = []
+    result = if Facter.value(:kernelmajversion) == '6.1'
+      ps('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+    else
+      ps('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+    end
+    xml = Document.new result
+    xml.root.each_element do |object|
+      name   = object.elements["Property[@Name='Name']"].text.downcase
+      state  = if object.elements["Property[@Name='Installed']"].text == 'False'
+                 :absent
+               elsif object.elements["Property[@Name='Installed']"].text == 'True'
+                 :present
+               end
+      feature_hash = {
+        :name => name, :ensure => state,
+      }
+      features.push(feature_hash)
+    end
     features.map do |feature|
-      name = feature['Name'].downcase
-      installed = feature['InstallState']
-      if installed == 1
-        currentstate = :present
-      elsif installed == 0
-        currentstate = :absent
-      end
-      new(:name => name, :ensure => currentstate)
+      new(feature)
     end
   end
 
@@ -42,55 +60,33 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
   end
 
   def create
-    install_cmd = case Facter.value(:kernelmajversion)
-                  when %r{6.1}
-                    'Import-Module ServerManager; Add-WindowsFeature'
-                  else
-                    'Install-WindowsFeature'
-                  end
-
-    # Options currently not used, timeout should be added in the future
-    options = []
-
-    if resource['installmanagementtools'] == true
-      case Facter.value(:kernelmajversion)
-      when %r{6.1}
-        raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'
-      when %r{6.2|6.3|10}
-        options.push('-IncludeManagementTools')
-      end
-    end
-    if resource['installsubfeatures'] == true
-      options.push('-IncludeAllSubFeature')
-    end
-    options.push('-Restart') if resource['restart'] == true
-    options.push("-Source #{resource['source']}") unless resource['source'].nil?
-
-    if options.empty?
-      ps(install_cmd, resource['name'])
+    array = []
+    if Facter.value(:kernelmajversion) == '6.1'
+      array << "Import-Module ServerManager; Add-WindowsFeature #{resource[:name]}"
     else
-      psopts = options.join(' ')
-      ps(install_cmd, resource['name'], psopts)
+      array << "Install-WindowsFeature #{resource[:name]}"
     end
+    array << '-InstallSubFeatures' if @property_flush[:installsubfeatures]
+    array << '-Restart' if @property_flush[:restart]
+    array << "-Source #{resource['source']}" if @property_flush[:source]
+    errormsg = 'installmanagementtools can only be used with Windows 2012 and above'
+    if Facter.value(:kernelmajversion) == '6.1'
+      raise Puppet::Error, errormsg if @property_flush[:installmanagementtools]
+    else
+      array << '-InstallManagementTools' if @property_flush[:installmanagementtools]
+    end
+  ps(array)
   end
 
   def destroy
-    uninstall_cmd = case Facter.value(:kernelmajversion)
-                    when %r{6.1}
-                      'Import-Module ServerManager; Remove-WindowsFeature'
-                    else
-                      'Remove-WindowsFeature'
-                    end
-
-    uninstall_options = []
-
-    uninstall_options.push('-Restart') if resource['restart'] == true
-
-    if uninstall_options.empty?
-      ps(uninstall_cmd, resource['name'])
+    array = []
+    if Facter.value(:kernelmajversion) == '6.1'
+      array << "Import-Module ServerManager; Remove-WindowsFeature #{resource[:name]}"
     else
-      psopts = uninstall_options.join(' ')
-      ps(uninstall_cmd, resource['name'], psopts)
+      array << "Uninstall-WindowsFeature #resource[:name]"
     end
+    array << '-Restart' if @property_flush[:restart]
+    ps(array)
   end
+
 end

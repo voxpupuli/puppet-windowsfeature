@@ -15,13 +15,13 @@ describe provider_class do
   let(:instance) { provider.class.instances.first }
 
   let(:windows_feature_json) do
-    # Read big JSON file from a base 2012R2 run
+    # Read big XML file from a base 2012R2 run
     fixture('windows-features')
   end
 
   before :each do
     Facter.stubs(:value).with(:kernel).returns(:windows)
-    provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-JSON').returns(windows_feature_json)
+    provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation').returns(windows_feature_xml)
   end
 
   it 'supports resource discovery' do
