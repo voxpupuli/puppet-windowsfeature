@@ -1,3 +1,8 @@
+## 2016-08-18 - Release 2.0.2
+### Summary
+
+  Switched from CSV to XML
+
 ## 2016-07-13 - Release 2.0.1
 ### Summary
 

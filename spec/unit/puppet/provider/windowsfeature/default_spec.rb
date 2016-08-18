@@ -14,15 +14,15 @@ describe provider_class do
 
   let(:instance) { provider.class.instances.first }
 
-  let(:windows_feature_csv) do
-    # Read big CSV file from a base 2012R2 run
+  let(:windows_feature_xml) do
+    # Read big XML file from a base 2012R2 run
     fixture('windows-features')
   end
 
   before :each do
     Facter.stubs(:value).with(:kernel).returns(:windows)
     Facter.stubs(:value).with(:kernelmajversion).returns('6.2')
-    provider.class.stubs(:ps).with('Get-WindowsFeature|Select Name,Installed|ConvertTo-CSV').returns(windows_feature_csv)
+    provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation').returns(windows_feature_xml)
   end
 
   it 'supports resource discovery' do
