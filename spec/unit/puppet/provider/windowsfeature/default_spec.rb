@@ -82,16 +82,15 @@ describe provider_class do
       end
 
       it 'fails when kernelmajversion 6.1' do
-        Facter.expects(:value).twice.with(:kernelmajversion).returns('6.1')
+        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
+#        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
         expect { provider.create }.to raise_error(Puppet::Error, %r{installmanagementtools can only be used with Windows 2012 and above})
       end
 
-      ['6.2', '6.3', '10'].each do |supported_kernel|
-        it 'runs Install-WindowsFeature with -IncludeManagementTools' do
-          Facter.expects(:value).twice.with(:kernelmajversion).returns(supported_kernel)
-          Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature feature-name -IncludeManagementTools').returns('')
-          provider.create
-        end
+      it 'runs Install-WindowsFeature with -IncludeManagementTools' do
+        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature feature-name -IncludeManagementTools').returns('')
+        provider.create
       end
     end
 
