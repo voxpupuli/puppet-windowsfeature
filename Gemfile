@@ -28,6 +28,7 @@ group :test do
     gem 'voxpupuli-release',                                          :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
     gem 'puppet-strings',                                             :require => false, :git => 'https://github.com/puppetlabs/puppetlabs-strings.git'
   if RUBY_VERSION < '2.2.0'
+    gem 'json_pure','1.8.3'
     gem 'rubocop', '0.41.2', :require => false
     gem 'rubocop-rspec', '1.5.0', :require => false
   else
