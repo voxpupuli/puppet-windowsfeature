@@ -83,7 +83,6 @@ describe provider_class do
 
       it 'fails when kernelmajversion 6.1' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.1')
-#        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
         expect { provider.create }.to raise_error(Puppet::Error, %r{installmanagementtools can only be used with Windows 2012 and above})
       end
 
