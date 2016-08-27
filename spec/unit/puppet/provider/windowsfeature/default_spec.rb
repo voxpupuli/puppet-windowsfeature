@@ -14,14 +14,15 @@ describe provider_class do
 
   let(:instance) { provider.class.instances.first }
 
-  let(:windows_feature_json) do
-    # Read big JSON file from a base 2012R2 run
+  let(:windows_feature_xml) do
+    # Read big XML file from a base 2012R2 run
     fixture('windows-features')
   end
 
   before :each do
     Facter.stubs(:value).with(:kernel).returns(:windows)
-    provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-JSON').returns(windows_feature_json)
+    Facter.stubs(:value).with(:kernelmajversion).returns('6.2')
+    provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation').returns(windows_feature_xml)
   end
 
   it 'supports resource discovery' do
@@ -52,7 +53,7 @@ describe provider_class do
   describe 'self.instances' do
     it 'returns an array of windows features' do
       features = provider.class.instances.map(&:name)
-      expect(features).to include('ad-certificate', 'fileandstorage-services')
+      expect(features).to include('ad-certificate', 'wins-server')
     end
   end
 
@@ -60,14 +61,14 @@ describe provider_class do
     context 'on Windows 6.1' do
       it 'runs Import-Module ServerManager; Add-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.1')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Add-WindowsFeature', 'feature-name').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Add-WindowsFeature feature-name').returns('')
         provider.create
       end
     end
     context 'on Windows 6.2 onward' do
       it 'runs Install-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature feature-name').returns('')
         provider.create
       end
     end
@@ -81,16 +82,14 @@ describe provider_class do
       end
 
       it 'fails when kernelmajversion 6.1' do
-        Facter.expects(:value).twice.with(:kernelmajversion).returns('6.1')
+        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
         expect { provider.create }.to raise_error(Puppet::Error, %r{installmanagementtools can only be used with Windows 2012 and above})
       end
 
-      ['6.2', '6.3', '10'].each do |supported_kernel|
-        it 'runs Install-WindowsFeature with -IncludeManagementTools' do
-          Facter.expects(:value).twice.with(:kernelmajversion).returns(supported_kernel)
-          Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name', '-IncludeManagementTools').returns('')
-          provider.create
-        end
+      it 'runs Install-WindowsFeature with -IncludeManagementTools' do
+        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature feature-name -IncludeManagementTools').returns('')
+        provider.create
       end
     end
 
@@ -105,7 +104,7 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature', 'feature-name', '-IncludeAllSubFeature').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature feature-name -IncludeAllSubFeature').returns('')
         provider.create
       end
     end
@@ -113,16 +112,16 @@ describe provider_class do
 
   describe 'destroy' do
     context 'on Windows 6.1' do
-      it 'runs Import-Module ServerManager; Add-WindowsFeature' do
+      it 'runs Import-Module ServerManager; Remove-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.1')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Remove-WindowsFeature', 'feature-name').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Remove-WindowsFeature feature-name').returns('')
         provider.destroy
       end
     end
     context 'on Windows 6.2 onward' do
-      it 'runs Install-WindowsFeature' do
+      it 'runs Uninstall-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Remove-WindowsFeature', 'feature-name').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Uninstall-WindowsFeature feature-name').returns('')
         provider.destroy
       end
     end
@@ -135,9 +134,9 @@ describe provider_class do
         )
       end
 
-      it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
+      it 'runs Uninstall-WindowsFeature with -Restart' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Remove-WindowsFeature', 'feature-name', '-Restart').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Uninstall-WindowsFeature feature-name -Restart').returns('')
         provider.destroy
       end
     end

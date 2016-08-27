@@ -1,8 +1,12 @@
-require 'json'
+require 'rexml/document'
+include REXML
 Puppet::Type.type(:windowsfeature).provide(:default) do
   # We don't support 1.8.7 officially, but lets be nice and not cause errors
   # rubocop:disable Style/HashSyntax
 
+  # windows only
+  confine :kernel => :windows
+  # powershell, powershell, powershell.  where to find it.
   commands :ps =>
     if File.exist?("#{ENV['SYSTEMROOT']}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe")
       "#{ENV['SYSTEMROOT']}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe"
@@ -12,19 +16,37 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
       'powershell.exe'
     end
 
-  confine :kernel => :windows
-
   def self.instances
-    features = JSON.parse(ps('Get-WindowsFeature | ConvertTo-JSON'))
+    # an array to store feature hashes
+    features = []
+    # set windows 2008 to true/False
+    win2008 = Facter.value(:kernelmajversion) == '6.1'
+    # if win2008 import ServerManager module
+    result = if win2008 == true
+               ps('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+             else
+               ps('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+             end
+    # create the XML document and parse the objects
+    xml = Document.new result
+    xml.root.each_element do |object|
+      # get the name and install state of the windows feature
+      name  = object.elements["Property[@Name='Name']"].text.downcase
+      state = if object.elements["Property[@Name='Installed']"].text == 'False'
+                :absent
+              elsif object.elements["Property[@Name='Installed']"].text == 'True'
+                :present
+              end
+      # put name and state into a hash
+      feature_hash = {
+        :ensure => state, :name => name
+      }
+      # push hash to feature array
+      features.push(feature_hash)
+    end
+    # map the feature array
     features.map do |feature|
-      name = feature['Name'].downcase
-      installed = feature['InstallState']
-      if installed == 1
-        currentstate = :present
-      elsif installed == 0
-        currentstate = :absent
-      end
-      new(:name => name, :ensure => currentstate)
+      new(feature)
     end
   end
 
@@ -42,55 +64,42 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
   end
 
   def create
-    install_cmd = case Facter.value(:kernelmajversion)
-                  when %r{6.1}
-                    'Import-Module ServerManager; Add-WindowsFeature'
-                  else
-                    'Install-WindowsFeature'
-                  end
-
-    # Options currently not used, timeout should be added in the future
-    options = []
-
-    if resource['installmanagementtools'] == true
-      case Facter.value(:kernelmajversion)
-      when %r{6.1}
-        raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'
-      when %r{6.2|6.3|10}
-        options.push('-IncludeManagementTools')
-      end
+    # an array called array
+    array = []
+    # if it is windows 2008 let's just call it that
+    win2008 = Facter.value(:kernelmajversion) == '6.1'
+    # set the install line
+    array << "Import-Module ServerManager; Add-WindowsFeature #{resource[:name]}" if win2008 == true
+    array << "Install-WindowsFeature #{resource[:name]}" if win2008 == false
+    # add restart, subfeatures and a source optionally
+    array << '-IncludeAllSubFeature' if @resource[:installsubfeatures] == true
+    array << '-Restart' if @resource[:restart] == true
+    array << "-Source #{resource['source']}" if @resource[:source] == false
+    # raise an error if 2008 tried to install mgmt tools
+    if @resource[:installmanagementtools] == true && win2008 == true
+      raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'
     end
-    if resource['installsubfeatures'] == true
-      options.push('-IncludeAllSubFeature')
-    end
-    options.push('-Restart') if resource['restart'] == true
-    options.push("-Source #{resource['source']}") unless resource['source'].nil?
-
-    if options.empty?
-      ps(install_cmd, resource['name'])
-    else
-      psopts = options.join(' ')
-      ps(install_cmd, resource['name'], psopts)
-    end
+    # install management tools
+    array << '-IncludeManagementTools' if @resource[:installmanagementtools] == true && win2008 == false
+    # show the created ps string, get the result, show the result (debug)
+    Puppet.debug "Powershell create command is '#{array}'"
+    result = ps(array.join(' '))
+    Puppet.debug "Powershell create response was '#{result}'"
   end
 
   def destroy
-    uninstall_cmd = case Facter.value(:kernelmajversion)
-                    when %r{6.1}
-                      'Import-Module ServerManager; Remove-WindowsFeature'
-                    else
-                      'Remove-WindowsFeature'
-                    end
-
-    uninstall_options = []
-
-    uninstall_options.push('-Restart') if resource['restart'] == true
-
-    if uninstall_options.empty?
-      ps(uninstall_cmd, resource['name'])
-    else
-      psopts = uninstall_options.join(' ')
-      ps(uninstall_cmd, resource['name'], psopts)
-    end
+    # an array called array
+    array = []
+    # if it is windows 2008 let's just call it that
+    win2008 = Facter.value(:kernelmajversion) == '6.1'
+    # set the uninstall line
+    array << "Import-Module ServerManager; Remove-WindowsFeature #{resource[:name]}" if win2008 == true
+    array << "Uninstall-WindowsFeature #{resource[:name]}" if win2008 == false
+    # add the restart flag optionally
+    array << '-Restart' if @resource[:restart] == true
+    # show the created ps string, get the result, show the result (debug)
+    Puppet.debug "Powershell destroy command is '#{array}'"
+    result = ps(array.join(' '))
+    Puppet.debug "Powershell destroy response was '#{result}'"
   end
 end
