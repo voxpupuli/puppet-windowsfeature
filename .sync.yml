@@ -1,15 +1,4 @@
 ---
-Gemfile:
-  supports_windows: true
-  required:
-    ':system_tests':
-      - gem: beaker
-        version: '2.43.0'
-      - gem: beaker-rspec
-        version: '5.4.0'
-      - gem: winrm
-        version: '1.8.1'
-      - gem: beaker-puppet_install_helper
 spec/acceptance/nodesets/centos-511-x64.yml:
   unmanaged: true
 spec/acceptance/nodesets/centos-66-x64-pe.yml:
