@@ -10,45 +10,6 @@ def location_for(place, fake_version = nil)
   end
 end
 
-group :test do
-    gem 'puppetlabs_spec_helper',                                     :require => false
-    gem 'rspec-puppet',                                               :require => false, :git => 'https://github.com/rodjek/rspec-puppet.git'
-    gem 'rspec-puppet-facts',                                         :require => false
-    gem 'rspec-puppet-utils',                                         :require => false
-    gem 'puppet-lint', '~> 1.0',                                      :require => false
-    gem 'puppet-lint-absolute_classname-check',                       :require => false
-    gem 'puppet-lint-leading_zero-check',                             :require => false
-    gem 'puppet-lint-trailing_comma-check',                           :require => false
-    gem 'puppet-lint-version_comparison-check',                       :require => false
-    gem 'puppet-lint-classes_and_types_beginning_with_digits-check',  :require => false
-    gem 'puppet-lint-unquoted_string-check',                          :require => false
-    gem 'puppet-lint-variable_contains_upcase',                       :require => false
-    gem 'metadata-json-lint',                                         :require => false
-    gem 'puppet-blacksmith',                                          :require => false, :git => 'https://github.com/voxpupuli/puppet-blacksmith.git'
-    gem 'voxpupuli-release',                                          :require => false, :git => 'https://github.com/voxpupuli/voxpupuli-release-gem.git'
-    gem 'puppet-strings',                                             :require => false, :git => 'https://github.com/puppetlabs/puppetlabs-strings.git'
-  if RUBY_VERSION < '2.0.0'
-    gem 'json_pure', '1.8.3'
-  end
-  if RUBY_VERSION < '2.2.0'
-    gem 'rubocop', '0.41.2', :require => false
-    gem 'rubocop-rspec', '1.5.0', :require => false
-  else
-    gem 'rubocop-rspec'
-  end
-end
-
-group :development do
-  if RUBY_VERSION > '2.0.0'
-    gem 'travis',:require => false
-    gem 'travis-lint',:require => false
-    gem 'guard-rake',:require => false
-  else
-    gem 'travis-lint','1.8.0'
-    gem 'travis','1.8.0'
-  end
-end
-
 group :system_tests do
   gem 'beaker', '2.43.0',              :require => false
   if beaker_version = ENV['BEAKER_VERSION']
@@ -66,9 +27,9 @@ end
 
 
 if facterversion = ENV['FACTER_GEM_VERSION']
-gem 'facter', facterversion.to_s, :require => false, :groups => [:test]
+  gem 'facter', facterversion.to_s, :require => false, :groups => [:test]
 else
-gem 'facter', :require => false, :groups => [:test]
+  gem 'facter', :require => false, :groups => [:test]
 end
 
 ENV['PUPPET_VERSION'].nil? ? puppetversion = '~> 4.0' : puppetversion = ENV['PUPPET_VERSION'].to_s
