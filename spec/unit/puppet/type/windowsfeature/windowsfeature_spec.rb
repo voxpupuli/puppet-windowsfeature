@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 describe Puppet::Type.type(:windowsfeature) do
-  before :each do
+  before do
     described_class.stubs(:defaultprovider).returns providerclass
   end
 

@@ -7,7 +7,7 @@ describe provider_class do
     Puppet::Type.type(:windowsfeature).new(
       title: 'feature-name',
       provider: described_class.name
-  )
+    )
   end
 
   let(:provider) { resource.provider }
@@ -19,7 +19,7 @@ describe provider_class do
     fixture('windows-features')
   end
 
-  before :each do
+  before do
     Facter.stubs(:value).with(:kernel).returns(:windows)
     Facter.stubs(:value).with(:kernelmajversion).returns('6.2')
     provider.class.stubs(:ps).with('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation').returns(windows_feature_xml)
