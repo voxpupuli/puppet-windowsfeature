@@ -1,5 +1,8 @@
 Puppet::Type.newtype(:windowsfeature) do
-  ensurable
+  ensurable do
+    defaultvalues
+    defaultto :present
+  end
 
   newparam(:name) do
     isnamevar

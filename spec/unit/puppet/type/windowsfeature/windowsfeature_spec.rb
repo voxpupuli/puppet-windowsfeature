@@ -11,6 +11,16 @@ describe Puppet::Type.type(:windowsfeature) do
     described_class.provide(:fake_windowsfeature_provider) { mk_resource_methods }
   end
 
+  let :resource do
+    Puppet::Type.type(:windowsfeature).new(
+      name: 'example_feature'
+    )
+  end
+
+  it 'defaults to ensure => present' do
+    expect(resource[:ensure]).to eq :present
+  end
+
   it 'has :name as its keyattribute' do
     expect(described_class.key_attributes).to eq([:name])
   end
