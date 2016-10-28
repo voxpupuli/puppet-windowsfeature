@@ -15,6 +15,6 @@ describe 'windowsfeature' do
   end
 
   describe windows_feature('as-net-framework') do
-    it { should be_installed.by('powershell') }
+    it { is_expected.to be_installed.by('powershell') }
   end
 end
