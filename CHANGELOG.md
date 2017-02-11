@@ -1,3 +1,13 @@
+# Changelog
+
+## 2017-02-11 - Release 2.1.0
+
+This is the last release with Puppet3 support!
+* Switched everything over to XML and updated tests.
+* some fixes from getting rid of trying flush
+* Converted from CSV to XML - Resolved merge conflict
+* Set minimum version_requirement for Puppet
+
 ## 2016-08-18 - Release 2.0.2
 ### Summary
 
