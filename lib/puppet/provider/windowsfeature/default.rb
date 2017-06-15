@@ -74,7 +74,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     # add restart, subfeatures and a source optionally
     array << '-IncludeAllSubFeature' if @resource[:installsubfeatures] == true
     array << '-Restart' if @resource[:restart] == true
-    array << "-Source #{resource['source']}" unless @resource[:source].to_s.strip.empty?
+    array << "-Source #{resource[:source]}" unless @resource[:source].to_s.strip.empty?
     # raise an error if 2008 tried to install mgmt tools
     if @resource[:installmanagementtools] == true && win2008 == true
       raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'
