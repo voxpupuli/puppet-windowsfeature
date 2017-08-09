@@ -20,10 +20,10 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     # an array to store feature hashes
     features = []
     # set windows 2008 to true/False
-    win2008 = Facter.value(:kernelmajversion) == '6.1'
+    win2008 = Facter.value(:kernelmajversion) == '6.1' || Facter.value(:kernelmajversion) == '6.0'
     # if win2008 import ServerManager module
     result = if win2008 == true
-               ps('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+               ps('Import-Module ServerManager; Get-WindowsFeature | Select Name,Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
              else
                ps('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
              end
