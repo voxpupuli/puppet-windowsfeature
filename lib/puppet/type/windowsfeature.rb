@@ -34,7 +34,7 @@ Puppet::Type.newtype(:windowsfeature) do
   end
 
   newparam(:source) do
-    # validate is tring or false
+    # validate is String or false
     validate do |value|
       unless value.is_a?(String)
         raise Puppet::Error, 'Parameter source is not a string.'
