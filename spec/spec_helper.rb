@@ -8,7 +8,8 @@ if Dir.exist?(File.expand_path('../../lib', __FILE__))
   require 'simplecov-console'
   SimpleCov.formatters = [
     SimpleCov::Formatter::HTMLFormatter,
-    SimpleCov::Formatter::Console
+    SimpleCov::Formatter::Console,
+    Coveralls::SimpleCov::Formatter
   ]
   SimpleCov.start do
     track_files 'lib/**/*.rb'
