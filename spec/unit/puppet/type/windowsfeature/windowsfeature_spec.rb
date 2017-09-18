@@ -1,5 +1,3 @@
-#!/usr/bin/env ruby
-
 require 'spec_helper'
 
 describe Puppet::Type.type(:windowsfeature) do
@@ -48,7 +46,7 @@ describe Puppet::Type.type(:windowsfeature) do
 
       it 'rejects non-boolen' do
         expect { described_class.new(name: 'feature-name', installmanagementtools: 'foo') }.
-          to raise_error(%r{Parameter installmanagementtools must be true or false})
+          to raise_error(Puppet::ResourceError)
       end
     end
 
@@ -59,7 +57,7 @@ describe Puppet::Type.type(:windowsfeature) do
 
       it 'rejects non-boolen' do
         expect { described_class.new(name: 'feature-name', installsubfeatures: 'foo') }.
-          to raise_error(%r{Parameter installsubfeatures must be true or false})
+          to raise_error(Puppet::ResourceError)
       end
     end
 
@@ -70,7 +68,7 @@ describe Puppet::Type.type(:windowsfeature) do
 
       it 'rejects non-boolen' do
         expect { described_class.new(name: 'feature-name', restart: 'foo') }.
-          to raise_error(%r{Parameter restart must be true or false})
+          to raise_error(Puppet::ResourceError)
       end
     end
 

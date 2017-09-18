@@ -4,36 +4,36 @@
 spec/spec_helper.rb:
   spec_overrides: "require 'spec_helper_methods'"
 spec/acceptance/nodesets/docker/centos-5.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/centos-6.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/centos-7.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/debian-7.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/debian-8.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/ubuntu-12.04.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/ubuntu-14.04.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/docker/ubuntu-16.04.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/centos-511-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/centos-66-x64-pe.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/centos-66-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/centos-72-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/debian-78-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/debian-82-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/ubuntu-server-1204-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/ubuntu-server-1404-x64.yml:
-  unmanaged: true
+  delete: true
 spec/acceptance/nodesets/ubuntu-server-1604-x64.yml:
-  unmanaged: true
+  delete: true

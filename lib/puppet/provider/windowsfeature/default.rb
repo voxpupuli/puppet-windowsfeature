@@ -20,7 +20,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     # an array to store feature hashes
     features = []
     # set windows 2008 to true/False
-    win2008 = Facter.value(:kernelmajversion) == '6.1'
+    win2008 = Facter.value(:kernelmajversion) == '6.1' || Facter.value(:kernelmajversion) == '6.0'
     # if win2008 import ServerManager module
     result = if win2008 == true
                ps('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation > C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/provider/windowsfeature/result.xml')
@@ -75,7 +75,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     # add restart, subfeatures and a source optionally
     array << '-IncludeAllSubFeature' if @resource[:installsubfeatures] == true
     array << '-Restart' if @resource[:restart] == true
-    array << "-Source #{resource['source']}" unless @resource[:source].to_s.strip.empty?
+    array << "-Source #{resource[:source]}" unless @resource[:source].to_s.strip.empty?
     # raise an error if 2008 tried to install mgmt tools
     if @resource[:installmanagementtools] == true && win2008 == true
       raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'

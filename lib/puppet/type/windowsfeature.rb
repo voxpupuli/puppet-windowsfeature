@@ -1,3 +1,5 @@
+require 'puppet/parameter/boolean'
+
 Puppet::Type.newtype(:windowsfeature) do
   ensurable do
     defaultvalues
@@ -8,33 +10,17 @@ Puppet::Type.newtype(:windowsfeature) do
     isnamevar
   end
 
-  newparam(:installmanagementtools) do
-    validate do |value|
-      unless value == true || value == false
-        raise Puppet::Error, 'Parameter installmanagementtools must be true or false'
-      end
-    end
+  newparam(:installmanagementtools, boolean: true, parent: Puppet::Parameter::Boolean) do
   end
 
-  newparam(:installsubfeatures) do
-    # validate is bool
-    validate do |value|
-      unless value == true || value == false
-        raise Puppet::Error, 'Parameter installsubfeatures must be true or false'
-      end
-    end
+  newparam(:installsubfeatures, boolean: true, parent: Puppet::Parameter::Boolean) do
   end
 
-  newparam(:restart) do
-    validate do |value|
-      unless value == true || value == false
-        raise Puppet::Error, 'Parameter restart must be true or false'
-      end
-    end
+  newparam(:restart, boolean: true, parent: Puppet::Parameter::Boolean) do
   end
 
   newparam(:source) do
-    # validate is tring or false
+    # validate is String
     validate do |value|
       unless value.is_a?(String)
         raise Puppet::Error, 'Parameter source is not a string.'
