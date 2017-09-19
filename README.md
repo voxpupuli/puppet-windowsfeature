@@ -1,5 +1,13 @@
 # puppet-windowsfeature
 
+[![License](https://img.shields.io/github/license/voxpupuli/puppet-windowsfeature.svg)](https://github.com/voxpupuli/puppet-windowsfeature/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/voxpupuli/puppet-windowsfeature.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-windowsfeature)
+[![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-windowsfeature/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-windowsfeature?branch=master)
+[![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/windowsfeature.svg)](https://forge.puppetlabs.com/puppet/windowsfeature)
+[![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/windowsfeature.svg)](https://forge.puppetlabs.com/puppet/windowsfeature)
+[![Puppet Forge - endorsement](https://img.shields.io/puppetforge/e/puppet/windowsfeature.svg)](https://forge.puppetlabs.com/puppet/windowsfeature)
+[![Puppet Forge - scores](https://img.shields.io/puppetforge/f/puppet/windowsfeature.svg)](https://forge.puppetlabs.com/puppet/windowsfeature)
+
 #### Table of Contents
 
 1. [Overview](#overview)
@@ -7,7 +15,6 @@
 3. [Setup - The basics of getting started with windowsfeature](#setup)
     * [What windowsfeature affects](#what-windowsfeature-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with windowfeature](#beginning-with-windowsfeature)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -15,9 +22,7 @@
 
 ## Overview
 
-The windowsfeature module is a small define that allows you to install/remove windows features.
-
-[![Build Status](https://travis-ci.org/voxpupuli/puppet-windowsfeature.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-windowsfeature)
+The windowsfeature module allows you to install/remove windows features.
 
 ## Module Description
 
@@ -35,75 +40,88 @@ For a list of the windows features you can install, please visit this [technet a
 
 * windowsfeature makes use of Powershell so you will need to have at least version 2.0 installed in order to use this module.
 
-## Beginning
+## Usage
 
-To install a single windows feature such as dotnet 3.5:
+To install a single windows feature such as .NET 3.5:
 
-    windowsfeature { 'NET-Framework-Core':
-      ensure => present,
-    }
+```puppet
+windowsfeature { 'NET-Framework-Core':
+  ensure => present,
+}
+```
 
 To install several windows features as part of a large application such IIS:
 
+```puppet
+$iis_features = ['Web-Server','Web-WebServer','Web-Asp-Net45','Web-ISAPI-Ext','Web-ISAPI-Filter','NET-Framework-45-ASPNET','WAS-NET-Environment','Web-Http-Redirect','Web-Filtering','Web-Mgmt-Console','Web-Mgmt-Tools']
 
-    $iis_features = ['Web-Server','Web-WebServer','Web-Asp-Net45','Web-ISAPI-Ext','Web-ISAPI-Filter','NET-Framework-45-ASPNET','WAS-NET-Environment','Web-Http-Redirect','Web-Filtering','Web-Mgmt-Console','Web-Mgmt-Tools']
-
-    windowsfeature { $iis_features:
-      ensure => present,
-    }
+windowsfeature { $iis_features:
+  ensure => present,
+}
+```
 
 To install any associated management tools:
 
-    windowsfeature { 'Web-WebServer':
-      ensure => present,
-      installmanagementtools => true
-    }
+```puppet
+windowsfeature { 'Web-WebServer':
+  ensure                 => present,
+  installmanagementtools => true,
+}
+```
 
-To install all subfeatures:
+To install all subfeatures without having to list them all out:
 
-    windowsfeature { 'Web-WebServer':
-      ensure             => present,
-      installsubfeatures => true
-    }
+```puppet
+windowsfeature { 'Web-WebServer':
+  ensure             => present,
+  installsubfeatures => true,
+}
+```
 
 To install a feature and that requires a restart:
 
-    windowsfeature {'RDS-RD-Server':
-      ensure             => present,
-      restart => 'true'
-    }
+```puppet
+windowsfeature { 'RDS-RD-Server':
+  ensure  => present,
+  restart => 'true'
+}
+```
 
-## Usage
-
-### Classes and Defined Types
-
-##Reference
+## Reference
 
 ### Types
 
-* `windowsfeature`: Installs a Windows Feature
+Parameters are optional unless otherwise noted.
 
-###Parameters
+#### `windowsfeature`
 
-####Type: windowsfeature
+##### `ensure`
 
-#####`ensure`
-Specifies the basic state of the resource. Valid values are 'present', 'absent'.
+Specifies whether the feature should be present. Valid options: 'present', 'installed' and 'absent'.
 
-#####`name`
-*Required* This name of the feature you want to manage
+Default: 'present'.
 
-#####`installmanagementtools`
-*Optional* Specifies that all applicable management tools of the roles, role services, or features specified by the Name parameter should be installed. Note: Although management tools are installed by default when you are installing features by using the , management tools are not installed by default when you install features by using the Install-WindowsFeature cmdlet; this parameter must be added to install management tools.
+##### `name`
 
-#####`installsubfeatures`
-*Optional* Specifies that all subordinate role services, and all subfeatures of parent roles, role services, or features specified by the Name parameter should be installed.
+*Required.*
 
-#####`restart`
-*Optional* Specifies that the target system is restarted automatically, if a restart is required by the installation process for the specified roles or features.
+The name of the feature you want to manage.
 
-#####`source`
-*Optional* Specify the location of an installation source. The source must be from the exact same version of Windows for the reinstallation to work. Without this parameter, PowerShell will use Windows Update by default to look for an installation source
+##### `installmanagementtools`
+
+Specifies that all applicable management tools of the roles, role services, or features specified by the Name parameter should be installed. Note: Although management tools are installed by default when you are installing features by using the UI, management tools are not installed by default when you install features by using the Install-WindowsFeature cmdlet; this parameter must be added to install management tools.
+
+##### `installsubfeatures`
+
+Specifies that all subordinate role services, and all subfeatures of parent roles, role services, or features specified by the Name parameter should be installed.
+
+##### `restart`
+
+Specifies that the target system is restarted automatically, if a restart is required by the installation process for the specified roles or features.
+
+##### `source`
+
+Specify the location of an installation source. The source must be from the exact same version of Windows for the reinstallation to work. Without this parameter, PowerShell will use Windows Update by default to look for an installation source
 
 ##Upgrading from 1.0.1 Release
 
@@ -125,6 +143,7 @@ The new 2.0.0 release uses native types and providers, which speeds up the time 
 For example, enabling all the Windows features for a standard IIS setuo after features are installed (ie. an idempotent run):
 
 1.0.0 release:
+
 ```
 win-2012R2-std 01:29:30$ puppet apply --verbose --detailed-exitcodes C:\Windows\Temp\apply_manifest.pp.8276
   Info: Loading facts
