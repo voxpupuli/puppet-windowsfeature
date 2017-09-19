@@ -81,10 +81,10 @@ windowsfeature { 'Web-WebServer':
 To install a feature and that requires a restart:
 
 ```puppet
-    windowsfeature { 'RDS-RD-Server':
-      ensure  => present,
-      restart => 'true'
-    }
+windowsfeature { 'RDS-RD-Server':
+  ensure  => present,
+  restart => 'true'
+}
 ```
 
 ## Reference
