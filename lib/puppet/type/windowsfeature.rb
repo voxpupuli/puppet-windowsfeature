@@ -17,6 +17,7 @@ Puppet::Type.newtype(:windowsfeature) do
   end
 
   newparam(:restart, boolean: true, parent: Puppet::Parameter::Boolean) do
+    Puppet.deprecation_warning('The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ).  This parameter will be removed in the next release.')
   end
 
   newparam(:source) do

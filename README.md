@@ -78,14 +78,21 @@ windowsfeature { 'Web-WebServer':
 }
 ```
 
-To install a feature and that requires a restart:
+To install a feature and reboot if one is pending:
 
 ```puppet
+
 windowsfeature { 'RDS-RD-Server':
   ensure  => present,
-  restart => 'true'
+}
+
+reboot {'after_RDS_RD_Server':
+  when  => pending,
+  subscribe => Windowsfeature['RDS-RD-Server'],
 }
 ```
+
+**DEPRECATION NOTICE: The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ).  This parameter will be removed in the next release.**
 
 ## Reference
 
@@ -123,7 +130,7 @@ Specifies that the target system is restarted automatically, if a restart is req
 
 Specify the location of an installation source. The source must be from the exact same version of Windows for the reinstallation to work. Without this parameter, PowerShell will use Windows Update by default to look for an installation source
 
-##Upgrading from 1.0.1 Release
+## Upgrading from 1.0.1 Release
 
 Previously, the windows features were managed by individual execs:
 
