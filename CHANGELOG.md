@@ -4,7 +4,21 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v3.0.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.0.0) (2017-09-17)
+## [v3.1.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.1.0) (2017-09-21)
+[Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.0.0...v3.1.0)
+
+**Closed issues:**
+
+- Updated Documentation wording + Documentation + Badges [\#96](https://github.com/voxpupuli/puppet-windowsfeature/issues/96)
+- Does not work on Windows 2008 [\#39](https://github.com/voxpupuli/puppet-windowsfeature/issues/39)
+
+**Merged pull requests:**
+
+- Remove Windows 2008 Support and Add Windows 2016 Support [\#103](https://github.com/voxpupuli/puppet-windowsfeature/pull/103) ([TraGicCode](https://github.com/TraGicCode))
+- Deprecation notice for the restart parameter [\#102](https://github.com/voxpupuli/puppet-windowsfeature/pull/102) ([TraGicCode](https://github.com/TraGicCode))
+- Fixing readme markdown formatting issues [\#99](https://github.com/voxpupuli/puppet-windowsfeature/pull/99) ([TraGicCode](https://github.com/TraGicCode))
+
+## [v3.0.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.0.0) (2017-09-18)
 [Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v2.1.0...v3.0.0)
 
 **Fixed bugs:**
@@ -14,6 +28,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- Release 3.0.0 [\#95](https://github.com/voxpupuli/puppet-windowsfeature/pull/95) ([TraGicCode](https://github.com/TraGicCode))
 - Refactor Hacky boolean validation [\#93](https://github.com/voxpupuli/puppet-windowsfeature/pull/93) ([TraGicCode](https://github.com/TraGicCode))
 - In a windows only module we don't want non-windows nodesets [\#92](https://github.com/voxpupuli/puppet-windowsfeature/pull/92) ([TraGicCode](https://github.com/TraGicCode))
 - \(GH-86\) Fix invalid XML from Get-WindowsFeature [\#88](https://github.com/voxpupuli/puppet-windowsfeature/pull/88) ([jarretlavallee](https://github.com/jarretlavallee))
