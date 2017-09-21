@@ -171,6 +171,7 @@ This module is tested on the following platforms:
 * Windows 2008 R2
 * Windows 2012
 * Windows 2012 R2
+* Windows 2016
 
 It is tested with the OSS version of Puppet only.
 
