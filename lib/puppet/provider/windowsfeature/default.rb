@@ -23,12 +23,13 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     win2008 = Facter.value(:kernelmajversion) == '6.1' || Facter.value(:kernelmajversion) == '6.0'
     # if win2008 import ServerManager module
     result = if win2008 == true
-               ps('Import-Module ServerManager; Get-WindowsFeature | Select Name,Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+               ps('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation > C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/provider/windowsfeature/result.xml')
              else
-               ps('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+               ps('Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation > C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/provider/windowsfeature/result.xml')
              end
+    file = File.new "C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/provider/windowsfeature/result.xml"
     # create the XML document and parse the objects
-    xml = Document.new result
+    xml = Document.new file
     xml.root.each_element do |object|
       # get the name and install state of the windows feature
       name  = object.elements["Property[@Name='Name']"].text.downcase
