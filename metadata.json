@@ -1,6 +1,6 @@
 {
   "name": "puppet-windowsfeature",
-  "version": "3.1.0",
+  "version": "3.1.1-rc0",
   "author": "Vox Pupuli",
   "license": "MIT",
   "summary": "A module that will turn windows features on or off for Windows Server 2008 and above",
