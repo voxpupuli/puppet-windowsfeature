@@ -88,7 +88,7 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -IncludeManagementTools' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Install-WindowsFeature feature-name -IncludeManagementTools').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools').returns('')
         provider.create
       end
     end
