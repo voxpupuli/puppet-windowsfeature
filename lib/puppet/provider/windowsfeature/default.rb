@@ -25,7 +25,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     result = if win2008 == true
                ps('Import-Module ServerManager; Get-WindowsFeature | Select Name,Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
              else
-               ps('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+               ps('Get-WindowsFeature | Select Name,Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
              end
     # create the XML document and parse the objects
     xml = Document.new result
