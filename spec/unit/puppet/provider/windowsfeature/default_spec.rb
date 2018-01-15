@@ -22,7 +22,7 @@ describe provider_class do
   before do
     Facter.stubs(:value).with(:kernel).returns(:windows)
     Facter.stubs(:value).with(:kernelmajversion).returns('6.2')
-    provider.class.stubs(:ps).with('Import-Module ServerManager; Get-WindowsFeature | ConvertTo-XML -As String -Depth 4 -NoTypeInformation').returns(windows_feature_xml)
+    provider.class.stubs(:ps).with('Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation').returns(windows_feature_xml)
   end
 
   it 'supports resource discovery' do
