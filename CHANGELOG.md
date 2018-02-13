@@ -4,7 +4,28 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
-## [v3.1.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.1.0) (2017-09-21)
+## [v3.2.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.2.0) (2018-02-14)
+[Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.1.0...v3.2.0)
+
+**Implemented enhancements:**
+
+- Add support and code for windows 2008 non-r2 [\#104](https://github.com/voxpupuli/puppet-windowsfeature/issues/104)
+
+**Fixed bugs:**
+
+- add Import-Module ServerManager for win2012r2 PS commands [\#110](https://github.com/voxpupuli/puppet-windowsfeature/pull/110) ([devcfgc](https://github.com/devcfgc))
+
+**Closed issues:**
+
+- Windowsfeature gives Corrective change every time [\#111](https://github.com/voxpupuli/puppet-windowsfeature/issues/111)
+- UTF8 error with french windows 2012 [\#109](https://github.com/voxpupuli/puppet-windowsfeature/issues/109)
+- Missing release [\#107](https://github.com/voxpupuli/puppet-windowsfeature/issues/107)
+
+**Merged pull requests:**
+
+- Resolve UTF8 problem with PowerShell output [\#112](https://github.com/voxpupuli/puppet-windowsfeature/pull/112) ([ahotton](https://github.com/ahotton))
+
+## [v3.1.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.1.0) (2017-09-22)
 [Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.0.0...v3.1.0)
 
 **Closed issues:**
@@ -14,6 +35,7 @@ These should not affect the functionality of the module.
 
 **Merged pull requests:**
 
+- 3.1.0 release [\#105](https://github.com/voxpupuli/puppet-windowsfeature/pull/105) ([TraGicCode](https://github.com/TraGicCode))
 - Remove Windows 2008 Support and Add Windows 2016 Support [\#103](https://github.com/voxpupuli/puppet-windowsfeature/pull/103) ([TraGicCode](https://github.com/TraGicCode))
 - Deprecation notice for the restart parameter [\#102](https://github.com/voxpupuli/puppet-windowsfeature/pull/102) ([TraGicCode](https://github.com/TraGicCode))
 - Fixing readme markdown formatting issues [\#99](https://github.com/voxpupuli/puppet-windowsfeature/pull/99) ([TraGicCode](https://github.com/TraGicCode))
