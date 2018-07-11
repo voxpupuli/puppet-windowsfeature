@@ -66,7 +66,10 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     array << "Import-Module ServerManager; Install-WindowsFeature #{resource[:name]}" if win2008 == false
     # add restart, subfeatures and a source optionally
     array << '-IncludeAllSubFeature' if @resource[:installsubfeatures] == true
-    array << '-Restart' if @resource[:restart] == true
+    if @resource[:restart] == true
+      Puppet.deprecation_warning('The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ).  This parameter will be removed in the next release.')
+      array << '-Restart'
+    end
     array << "-Source #{resource[:source]}" unless @resource[:source].to_s.strip.empty?
     # raise an error if 2008 tried to install mgmt tools
     if @resource[:installmanagementtools] == true && win2008 == true
@@ -89,10 +92,15 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     array << "Import-Module ServerManager; Remove-WindowsFeature #{resource[:name]}" if win2008 == true
     array << "Import-Module ServerManager; Uninstall-WindowsFeature #{resource[:name]}" if win2008 == false
     # add the restart flag optionally
-    array << '-Restart' if @resource[:restart] == true
+    if @resource[:restart] == true
+      Puppet.deprecation_warning('The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ).  This parameter will be removed in the next release.')
+      array << '-Restart'
+    end
     # show the created ps string, get the result, show the result (debug)
     Puppet.debug "Powershell destroy command is '#{array}'"
     result = ps(array.join(' '))
     Puppet.debug "Powershell destroy response was '#{result}'"
   end
+  
 end
+
