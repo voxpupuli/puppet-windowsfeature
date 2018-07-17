@@ -101,6 +101,4 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     result = ps(array.join(' '))
     Puppet.debug "Powershell destroy response was '#{result}'"
   end
-  
 end
-
