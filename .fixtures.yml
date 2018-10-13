@@ -1,4 +1,0 @@
-fixtures:
-  repositories:
-  symlinks:
-    windowsfeature: "#{source_dir}"
