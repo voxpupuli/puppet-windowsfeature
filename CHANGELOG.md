@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v3.2.2](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.2.2) (2018-10-19)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.2.1...v3.2.2)
+
+**Fixed bugs:**
+
+- Targeted Deprecation Notice of Restart parameter \(\#120\) [\#122](https://github.com/voxpupuli/puppet-windowsfeature/pull/122) ([fiveshotsofespresso](https://github.com/fiveshotsofespresso))
+
+**Closed issues:**
+
+- The restart parameter has been deprecated in favor of the puppetlabs reboot module \( https://github.com/puppetlabs/puppetlabs-reboot \). This parameter will be removed in the next release.  \(location: C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/type/windowsfeature.rb:20:in `block \(2 levels\) in \<top \(required\)\>'\) shows every run [\#120](https://github.com/voxpupuli/puppet-windowsfeature/issues/120)
+
 ## [v3.2.1](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.2.1) (2018-09-07)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.2.0...v3.2.1)
