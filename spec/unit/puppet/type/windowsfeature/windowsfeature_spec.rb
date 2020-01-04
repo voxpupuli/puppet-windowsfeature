@@ -24,11 +24,11 @@ describe Puppet::Type.type(:windowsfeature) do
   end
 
   describe 'when validating attributes' do
-    params = [
-      :installmanagementtools,
-      :installsubfeatures,
-      :restart,
-      :source
+    params = %i[
+      installmanagementtools
+      installsubfeatures
+      restart
+      source
     ]
 
     params.each do |param|
