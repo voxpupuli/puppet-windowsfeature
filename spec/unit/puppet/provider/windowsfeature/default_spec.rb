@@ -37,7 +37,7 @@ describe provider_class do
     provider.feature?(:ensurable)
   end
 
-  [:exists?, :create, :destroy].each do |method|
+  %i[exists? create destroy].each do |method|
     it "has a(n) #{method} method" do
       expect(provider).to respond_to(method)
     end
