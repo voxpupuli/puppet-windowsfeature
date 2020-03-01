@@ -19,7 +19,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
   def self.instances
     # an array to store feature hashes
     features = []
-    result = ps('Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation')
+    result = ps(%($ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation))
     # create the XML document and parse the objects
     xml = Document.new result
     xml.root.each_element do |object|
