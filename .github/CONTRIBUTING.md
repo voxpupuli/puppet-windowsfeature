@@ -33,6 +33,8 @@ By participating in this project you agree to abide by its terms.
 
 Please be prepared to repeat some of these steps as our contributors review your code.
 
+Also consider sending in your profile code that calls this component module as an acceptance test or provide it via an issue. This helps reviewers a lot to test your use case and prevents future regressions!
+
 ## Writing proper commits - short version
 
 * Make commits of logical units.
@@ -256,18 +258,20 @@ Beaker also supports docker containers. We also use that in our automated CI
 pipeline at [travis-ci](http://travis-ci.org). To use that instead of Vagrant:
 
 ```sh
-PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_debug=true BEAKER_setfile=debian9-64{hypervisor=docker} BEAKER_destroy=yes bundle exec rake beaker
+PUPPET_INSTALL_TYPE=agent BEAKER_IS_PE=no BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_debug=true BEAKER_setfile=debian10-64{hypervisor=docker} BEAKER_destroy=yes bundle exec rake beaker
 ```
 
-You can replace the string `debian9` with any common operating system.
+You can replace the string `debian10` with any common operating system.
 The following strings are known to work:
 
 * ubuntu1604
 * ubuntu1804
-* debian8
+* ubuntu2004
 * debian9
+* debian10
 * centos6
 * centos7
+* centos8
 
 The easiest way to debug in a docker container is to open a shell:
 
