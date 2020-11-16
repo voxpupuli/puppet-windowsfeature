@@ -68,7 +68,7 @@ describe provider_class do
     context 'on Windows 6.2 onward' do
       it 'runs Install-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Install-WindowsFeature feature-name').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name").returns('')
         provider.create
       end
     end
@@ -88,7 +88,7 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -IncludeManagementTools' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools").returns('')
         provider.create
       end
     end
@@ -104,7 +104,7 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeAllSubFeature').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeAllSubFeature").returns('')
         provider.create
       end
     end
@@ -120,7 +120,7 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -Source C:\Windows\sxs' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Install-WindowsFeature feature-name -Source C:\Windows\sxs').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Source C:\\Windows\\sxs").returns('')
         provider.create
       end
     end
@@ -136,7 +136,7 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -Restart' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Install-WindowsFeature feature-name -Restart').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Restart").returns('')
         provider.create
       end
     end
@@ -153,7 +153,7 @@ describe provider_class do
     context 'on Windows 6.2 onward' do
       it 'runs Uninstall-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Uninstall-WindowsFeature feature-name').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name").returns('')
         provider.destroy
       end
     end
@@ -168,7 +168,7 @@ describe provider_class do
 
       it 'runs Uninstall-WindowsFeature with -Restart' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Uninstall-WindowsFeature feature-name -Restart').returns('')
+        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name -Restart").returns('')
         provider.destroy
       end
     end
