@@ -63,7 +63,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     win2008 = Facter.value(:kernelmajversion) == '6.1'
     # set the install line
     array << "Import-Module ServerManager; Add-WindowsFeature #{resource[:name]}" if win2008 == true
-    array << "Import-Module ServerManager; Install-WindowsFeature #{resource[:name]}" if win2008 == false
+    array << "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature #{resource[:name]}" if win2008 == false
     # add restart, subfeatures and a source optionally
     array << '-IncludeAllSubFeature' if @resource[:installsubfeatures] == true
     if @resource[:restart] == true
@@ -90,7 +90,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     win2008 = Facter.value(:kernelmajversion) == '6.1'
     # set the uninstall line
     array << "Import-Module ServerManager; Remove-WindowsFeature #{resource[:name]}" if win2008 == true
-    array << "Import-Module ServerManager; Uninstall-WindowsFeature #{resource[:name]}" if win2008 == false
+    array << "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature #{resource[:name]}" if win2008 == false
     # add the restart flag optionally
     if @resource[:restart] == true
       Puppet.deprecation_warning('The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ).  This parameter will be removed in the next release.')
