@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper_acceptance'
 
 describe 'windowsfeature' do
@@ -7,7 +9,7 @@ describe 'windowsfeature' do
             windowsfeature { 'Web-Http-Redirect':
               ensure => present,
             }
-          MANIFEST
+      MANIFEST
     end
 
     it 'runs without errors' do
