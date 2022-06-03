@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rexml/document'
 include REXML
 Puppet::Type.type(:windowsfeature).provide(:default) do
@@ -25,9 +27,10 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     xml.root.each_element do |object|
       # get the name and install state of the windows feature
       name  = object.elements["Property[@Name='Name']"].text.downcase
-      state = if object.elements["Property[@Name='Installed']"].text == 'False'
+      state = case object.elements["Property[@Name='Installed']"].text
+              when 'False'
                 :absent
-              elsif object.elements["Property[@Name='Installed']"].text == 'True'
+              when 'True'
                 :present
               end
       # put name and state into a hash
@@ -45,7 +48,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
   def self.prefetch(resources)
     features = instances
-    resources.keys.each do |name|
+    resources.each_key do |name|
       if provider = features.find { |feature| feature.name == name.downcase } # rubocop:disable Lint/AssignmentInCondition
         resources[name].provider = provider
       end
@@ -72,9 +75,8 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     end
     array << "-Source #{resource[:source]}" unless @resource[:source].to_s.strip.empty?
     # raise an error if 2008 tried to install mgmt tools
-    if @resource[:installmanagementtools] == true && win2008 == true
-      raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above'
-    end
+    raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above' if @resource[:installmanagementtools] == true && win2008 == true
+
     # install management tools
     array << '-IncludeManagementTools' if @resource[:installmanagementtools] == true && win2008 == false
     # show the created ps string, get the result, show the result (debug)

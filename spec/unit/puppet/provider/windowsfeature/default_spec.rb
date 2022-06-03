@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 provider_class = Puppet::Type.type(:windowsfeature).provider(:default)
@@ -37,7 +39,7 @@ describe provider_class do
     provider.feature?(:ensurable)
   end
 
-  [:exists?, :create, :destroy].each do |method|
+  %i[exists? create destroy].each do |method|
     it "has a(n) #{method} method" do
       expect(provider).to respond_to(method)
     end
@@ -65,6 +67,7 @@ describe provider_class do
         provider.create
       end
     end
+
     context 'on Windows 6.2 onward' do
       it 'runs Install-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
@@ -72,6 +75,7 @@ describe provider_class do
         provider.create
       end
     end
+
     context 'with installmanagementtools' do
       let(:resource) do
         Puppet::Type.type(:windowsfeature).new(
@@ -150,6 +154,7 @@ describe provider_class do
         provider.destroy
       end
     end
+
     context 'on Windows 6.2 onward' do
       it 'runs Uninstall-WindowsFeature' do
         Facter.expects(:value).with(:kernelmajversion).returns('6.2')
@@ -157,6 +162,7 @@ describe provider_class do
         provider.destroy
       end
     end
+
     context 'with restart' do
       let(:resource) do
         Puppet::Type.type(:windowsfeature).new(

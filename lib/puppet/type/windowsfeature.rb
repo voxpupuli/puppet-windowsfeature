@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'puppet/parameter/boolean'
 
 Puppet::Type.newtype(:windowsfeature) do
@@ -22,9 +24,7 @@ Puppet::Type.newtype(:windowsfeature) do
   newparam(:source) do
     # validate is String
     validate do |value|
-      unless value.is_a?(String)
-        raise Puppet::Error, 'Parameter source is not a string.'
-      end
+      raise Puppet::Error, 'Parameter source is not a string.' unless value.is_a?(String)
     end
   end
 end

@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 require 'beaker-rspec/spec_helper'
 require 'beaker-rspec/helpers/serverspec'
 require 'winrm'
 
-GEOTRUST_GLOBAL_CA = <<-EOM.freeze
+GEOTRUST_GLOBAL_CA = <<-EOM
   -----BEGIN CERTIFICATE-----
   MIIDVDCCAjygAwIBAgIDAjRWMA0GCSqGSIb3DQEBBQUAMEIxCzAJBgNVBAYTAlVT
   MRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMRswGQYDVQQDExJHZW9UcnVzdCBHbG9i
@@ -38,7 +40,7 @@ RSpec.configure do |c|
   c.formatter = :documentation
 
   c.before :suite do
-    path = File.expand_path(File.dirname(__FILE__) + '/../').split('/')
+    path = File.expand_path("#{File.dirname(__FILE__)}/../").split('/')
     name = path[path.length - 1].split('-')[1]
     # Install module and dependencies
     puppet_module_install(source: proj_root, module_name: name)

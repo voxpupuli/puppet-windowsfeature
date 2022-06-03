@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Puppet::Type.type(:windowsfeature) do
@@ -24,15 +26,15 @@ describe Puppet::Type.type(:windowsfeature) do
   end
 
   describe 'when validating attributes' do
-    params = [
-      :installmanagementtools,
-      :installsubfeatures,
-      :restart,
-      :source
+    params = %i[
+      installmanagementtools
+      installsubfeatures
+      restart
+      source
     ]
 
     params.each do |param|
-      it "should have a #{param} parameter" do
+      it "has a #{param} parameter" do
         expect(described_class.attrtype(param)).to eq(:param)
       end
     end
