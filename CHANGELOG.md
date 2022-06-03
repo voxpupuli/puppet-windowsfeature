@@ -4,6 +4,36 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v4.0.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v4.0.0) (2022-06-03)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.2.2...v4.0.0)
+
+**Breaking changes:**
+
+- modulesync 5.3.0; Drop Puppet 5 support [\#147](https://github.com/voxpupuli/puppet-windowsfeature/pull/147) ([bastelfreak](https://github.com/bastelfreak))
+- modulesync 2.7.0 and drop puppet 4 [\#131](https://github.com/voxpupuli/puppet-windowsfeature/pull/131) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Puppet 7 support [\#143](https://github.com/voxpupuli/puppet-windowsfeature/issues/143)
+
+**Fixed bugs:**
+
+- Ignore powershell progress screens [\#136](https://github.com/voxpupuli/puppet-windowsfeature/pull/136) ([trevor-vaughan](https://github.com/trevor-vaughan))
+
+**Closed issues:**
+
+- Error: Could not prefetch windowsfeature provider 'default':  returned 1 [\#146](https://github.com/voxpupuli/puppet-windowsfeature/issues/146)
+- Errors during feature install on Windows 2019 [\#138](https://github.com/voxpupuli/puppet-windowsfeature/issues/138)
+
+**Merged pull requests:**
+
+- Dependency and Support Bump [\#148](https://github.com/voxpupuli/puppet-windowsfeature/pull/148) ([trevor-vaughan](https://github.com/trevor-vaughan))
+- \(GH-143\) Add puppet 7 support [\#145](https://github.com/voxpupuli/puppet-windowsfeature/pull/145) ([TraGicCode](https://github.com/TraGicCode))
+- Ignore PowerShell progress bar [\#139](https://github.com/voxpupuli/puppet-windowsfeature/pull/139) ([AndyAdrian-OP](https://github.com/AndyAdrian-OP))
+- Remove duplicate CONTRIBUTING.md file [\#133](https://github.com/voxpupuli/puppet-windowsfeature/pull/133) ([dhoppe](https://github.com/dhoppe))
+- Remove Linux acceptance nodesets [\#128](https://github.com/voxpupuli/puppet-windowsfeature/pull/128) ([ekohl](https://github.com/ekohl))
+
 ## [v3.2.2](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.2.2) (2018-10-19)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.2.1...v3.2.2)
@@ -14,7 +44,7 @@ These should not affect the functionality of the module.
 
 **Closed issues:**
 
-- The restart parameter has been deprecated in favor of the puppetlabs reboot module \( https://github.com/puppetlabs/puppetlabs-reboot \). This parameter will be removed in the next release.  \(location: C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/type/windowsfeature.rb:20:in `block \(2 levels\) in \<top \(required\)\>'\) shows every run [\#120](https://github.com/voxpupuli/puppet-windowsfeature/issues/120)
+- The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ). This parameter will be removed in the next release.  (location: C:/ProgramData/PuppetLabs/puppet/cache/lib/puppet/type/windowsfeature.rb:20:in `block \(2 levels\) in \<top \(required\)\>'\) shows every run [\#120](https://github.com/voxpupuli/puppet-windowsfeature/issues/120)
 
 ## [v3.2.1](https://github.com/voxpupuli/puppet-windowsfeature/tree/v3.2.1) (2018-09-07)
 
