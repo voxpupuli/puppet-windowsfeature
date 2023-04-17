@@ -30,38 +30,38 @@ Default value: `present`
 
 The following parameters are available in the `windowsfeature` type.
 
-* [`installmanagementtools`](#installmanagementtools)
-* [`installsubfeatures`](#installsubfeatures)
-* [`name`](#name)
-* [`provider`](#provider)
-* [`restart`](#restart)
-* [`source`](#source)
+* [`installmanagementtools`](#-windowsfeature--installmanagementtools)
+* [`installsubfeatures`](#-windowsfeature--installsubfeatures)
+* [`name`](#-windowsfeature--name)
+* [`provider`](#-windowsfeature--provider)
+* [`restart`](#-windowsfeature--restart)
+* [`source`](#-windowsfeature--source)
 
-##### <a name="installmanagementtools"></a>`installmanagementtools`
+##### <a name="-windowsfeature--installmanagementtools"></a>`installmanagementtools`
 
-Valid values: ``true``, ``false``, `yes`, `no`
-
-
-##### <a name="installsubfeatures"></a>`installsubfeatures`
-
-Valid values: ``true``, ``false``, `yes`, `no`
+Valid values: `true`, `false`, `yes`, `no`
 
 
-##### <a name="name"></a>`name`
+##### <a name="-windowsfeature--installsubfeatures"></a>`installsubfeatures`
+
+Valid values: `true`, `false`, `yes`, `no`
+
+
+##### <a name="-windowsfeature--name"></a>`name`
 
 namevar
 
 
-##### <a name="provider"></a>`provider`
+##### <a name="-windowsfeature--provider"></a>`provider`
 
 The specific backend to use for this `windowsfeature` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
 
-##### <a name="restart"></a>`restart`
+##### <a name="-windowsfeature--restart"></a>`restart`
 
-Valid values: ``true``, ``false``, `yes`, `no`
+Valid values: `true`, `false`, `yes`, `no`
 
 
-##### <a name="source"></a>`source`
+##### <a name="-windowsfeature--source"></a>`source`
 
 
