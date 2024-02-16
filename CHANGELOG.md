@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 Each new release typically also includes the latest modulesync defaults.
 These should not affect the functionality of the module.
 
+## [v5.0.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v5.0.0) (2024-02-16)
+
+[Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v4.0.0...v5.0.0)
+
+**Breaking changes:**
+
+- Drop Puppet 6 support [\#153](https://github.com/voxpupuli/puppet-windowsfeature/pull/153) ([bastelfreak](https://github.com/bastelfreak))
+
+**Implemented enhancements:**
+
+- Add Puppet 8 support [\#155](https://github.com/voxpupuli/puppet-windowsfeature/pull/155) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [v4.0.0](https://github.com/voxpupuli/puppet-windowsfeature/tree/v4.0.0) (2022-06-03)
 
 [Full Changelog](https://github.com/voxpupuli/puppet-windowsfeature/compare/v3.2.2...v4.0.0)
@@ -30,7 +42,7 @@ These should not affect the functionality of the module.
 
 - Dependency and Support Bump [\#148](https://github.com/voxpupuli/puppet-windowsfeature/pull/148) ([trevor-vaughan](https://github.com/trevor-vaughan))
 - \(GH-143\) Add puppet 7 support [\#145](https://github.com/voxpupuli/puppet-windowsfeature/pull/145) ([TraGicCode](https://github.com/TraGicCode))
-- Ignore PowerShell progress bar [\#139](https://github.com/voxpupuli/puppet-windowsfeature/pull/139) ([AndyAdrian-OP](https://github.com/AndyAdrian-OP))
+- Ignore PowerShell progress bar [\#139](https://github.com/voxpupuli/puppet-windowsfeature/pull/139) ([Andy-Adrian](https://github.com/Andy-Adrian))
 - Remove duplicate CONTRIBUTING.md file [\#133](https://github.com/voxpupuli/puppet-windowsfeature/pull/133) ([dhoppe](https://github.com/dhoppe))
 - Remove Linux acceptance nodesets [\#128](https://github.com/voxpupuli/puppet-windowsfeature/pull/128) ([ekohl](https://github.com/ekohl))
 
