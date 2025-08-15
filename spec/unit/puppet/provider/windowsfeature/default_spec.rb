@@ -22,9 +22,9 @@ describe provider_class do
   end
 
   before do
-    Facter.stubs(:value).with(:kernel).returns(:windows)
-    Facter.stubs(:value).with(:kernelmajversion).returns('6.2')
-    provider.class.stubs(:ps).with(%($ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation)).returns(windows_feature_xml)
+    allow(Facter).to receive(:value).with(:kernel).and_return(:windows)
+    allow(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+    allow(provider.class).to receive(:ps).with(%($ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation)).and_return(windows_feature_xml)
   end
 
   it 'supports resource discovery' do
@@ -62,16 +62,16 @@ describe provider_class do
   describe 'create' do
     context 'on Windows 6.1' do
       it 'runs Import-Module ServerManager; Add-WindowsFeature' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Add-WindowsFeature feature-name').returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.1')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with('Import-Module ServerManager; Add-WindowsFeature feature-name').and_return('')
         provider.create
       end
     end
 
     context 'on Windows 6.2 onward' do
       it 'runs Install-WindowsFeature' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name").and_return('')
         provider.create
       end
     end
@@ -86,13 +86,13 @@ describe provider_class do
       end
 
       it 'fails when kernelmajversion 6.1' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.1')
         expect { provider.create }.to raise_error(Puppet::Error, %r{installmanagementtools can only be used with Windows 2012 and above})
       end
 
       it 'runs Install-WindowsFeature with -IncludeManagementTools' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools").and_return('')
         provider.create
       end
     end
@@ -107,8 +107,8 @@ describe provider_class do
       end
 
       it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeAllSubFeature").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeAllSubFeature").and_return('')
         provider.create
       end
     end
@@ -123,8 +123,8 @@ describe provider_class do
       end
 
       it 'runs Install-WindowsFeature with -Source C:\Windows\sxs' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Source C:\\Windows\\sxs").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Source C:\\Windows\\sxs").and_return('')
         provider.create
       end
     end
@@ -139,8 +139,8 @@ describe provider_class do
       end
 
       it 'runs Install-WindowsFeature with -Restart' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Restart").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Restart").and_return('')
         provider.create
       end
     end
@@ -149,16 +149,16 @@ describe provider_class do
   describe 'destroy' do
     context 'on Windows 6.1' do
       it 'runs Import-Module ServerManager; Remove-WindowsFeature' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.1')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with('Import-Module ServerManager; Remove-WindowsFeature feature-name').returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.1')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with('Import-Module ServerManager; Remove-WindowsFeature feature-name').and_return('')
         provider.destroy
       end
     end
 
     context 'on Windows 6.2 onward' do
       it 'runs Uninstall-WindowsFeature' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name").and_return('')
         provider.destroy
       end
     end
@@ -173,8 +173,8 @@ describe provider_class do
       end
 
       it 'runs Uninstall-WindowsFeature with -Restart' do
-        Facter.expects(:value).with(:kernelmajversion).returns('6.2')
-        Puppet::Type::Windowsfeature::ProviderDefault.expects('ps').with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name -Restart").returns('')
+        expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
+        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name -Restart").and_return('')
         provider.destroy
       end
     end
