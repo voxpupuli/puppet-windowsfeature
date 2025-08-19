@@ -24,7 +24,13 @@ describe provider_class do
   before do
     allow(Facter).to receive(:value).with(:kernel).and_return(:windows)
     allow(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-    allow(provider.class).to receive(:ps).with(%($ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation)).and_return(windows_feature_xml)
+    allow(provider.class).to receive(:ps).with(
+      '-NoProfile',
+      '-NonInteractive',
+      '-NoLogo',
+      '-ExecutionPolicy', 'Bypass',
+      '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-Xml -As String -Depth 4 -NoTypeInformation"
+    ).and_return(windows_feature_xml)
   end
 
   it 'supports resource discovery' do
@@ -63,7 +69,13 @@ describe provider_class do
     context 'on Windows 6.1' do
       it 'runs Import-Module ServerManager; Add-WindowsFeature' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.1')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with('Import-Module ServerManager; Add-WindowsFeature feature-name').and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', 'Import-Module ServerManager; Add-WindowsFeature feature-name'
+        ).and_return('')
         provider.create
       end
     end
@@ -71,7 +83,13 @@ describe provider_class do
     context 'on Windows 6.2 onward' do
       it 'runs Install-WindowsFeature' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name"
+        ).and_return('')
         provider.create
       end
     end
@@ -92,7 +110,13 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -IncludeManagementTools' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeManagementTools"
+        ).and_return('')
         provider.create
       end
     end
@@ -108,7 +132,13 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -IncludeAllSubFeature' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeAllSubFeature").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -IncludeAllSubFeature"
+        ).and_return('')
         provider.create
       end
     end
@@ -124,7 +154,13 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -Source C:\Windows\sxs' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Source C:\\Windows\\sxs").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Source C:\\Windows\\sxs"
+        ).and_return('')
         provider.create
       end
     end
@@ -140,7 +176,13 @@ describe provider_class do
 
       it 'runs Install-WindowsFeature with -Restart' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Restart").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature feature-name -Restart"
+        ).and_return('')
         provider.create
       end
     end
@@ -150,7 +192,13 @@ describe provider_class do
     context 'on Windows 6.1' do
       it 'runs Import-Module ServerManager; Remove-WindowsFeature' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.1')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with('Import-Module ServerManager; Remove-WindowsFeature feature-name').and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', 'Import-Module ServerManager; Remove-WindowsFeature feature-name'
+        ).and_return('')
         provider.destroy
       end
     end
@@ -158,7 +206,13 @@ describe provider_class do
     context 'on Windows 6.2 onward' do
       it 'runs Uninstall-WindowsFeature' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name"
+        ).and_return('')
         provider.destroy
       end
     end
@@ -174,7 +228,13 @@ describe provider_class do
 
       it 'runs Uninstall-WindowsFeature with -Restart' do
         expect(Facter).to receive(:value).with(:kernelmajversion).and_return('6.2')
-        expect(Puppet::Type::Windowsfeature::ProviderDefault).to receive(:ps).with("$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name -Restart").and_return('')
+        expect(provider.class).to receive(:ps).with(
+          '-NoProfile',
+          '-NonInteractive',
+          '-NoLogo',
+          '-ExecutionPolicy', 'Bypass',
+          '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature feature-name -Restart"
+        ).and_return('')
         provider.destroy
       end
     end
