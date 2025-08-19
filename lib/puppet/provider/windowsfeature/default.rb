@@ -93,7 +93,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
       '-NoLogo',
       '-ExecutionPolicy', 'Bypass',
       '-Command',
-      "#{array.join(' ')}"
+      array.join(' ')
     )
     Puppet.debug "Powershell create response was '#{result}'"
   end
@@ -119,7 +119,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
       '-NoLogo',
       '-ExecutionPolicy', 'Bypass',
       '-Command',
-      "#{array.join(' ')}"
+      array.join(' ')
     )
     Puppet.debug "Powershell destroy response was '#{result}'"
   end

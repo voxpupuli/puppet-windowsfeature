@@ -216,6 +216,7 @@ describe provider_class do
         provider.destroy
       end
     end
+
     context 'with restart' do
       let(:resource) do
         Puppet::Type.type(:windowsfeature).new(
