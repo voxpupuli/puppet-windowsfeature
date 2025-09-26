@@ -21,7 +21,13 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
   def self.instances
     # an array to store feature hashes
     features = []
-    result = ps(%($ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-XML -As String -Depth 4 -NoTypeInformation))
+    result = ps(
+      '-NoProfile',
+      '-NonInteractive',
+      '-NoLogo',
+      '-ExecutionPolicy', 'Bypass',
+      '-Command', "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Get-WindowsFeature | Select-Object -Property Name, Installed | ConvertTo-Xml -As String -Depth 4 -NoTypeInformation"
+    )
     # create the XML document and parse the objects
     xml = Document.new result
     xml.root.each_element do |object|
@@ -81,7 +87,14 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     array << '-IncludeManagementTools' if @resource[:installmanagementtools] == true && win2008 == false
     # show the created ps string, get the result, show the result (debug)
     Puppet.debug "Powershell create command is '#{array}'"
-    result = ps(array.join(' '))
+    result = ps(
+      '-NoProfile',
+      '-NonInteractive',
+      '-NoLogo',
+      '-ExecutionPolicy', 'Bypass',
+      '-Command',
+      array.join(' ')
+    )
     Puppet.debug "Powershell create response was '#{result}'"
   end
 
@@ -100,7 +113,14 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
     end
     # show the created ps string, get the result, show the result (debug)
     Puppet.debug "Powershell destroy command is '#{array}'"
-    result = ps(array.join(' '))
+    result = ps(
+      '-NoProfile',
+      '-NonInteractive',
+      '-NoLogo',
+      '-ExecutionPolicy', 'Bypass',
+      '-Command',
+      array.join(' ')
+    )
     Puppet.debug "Powershell destroy response was '#{result}'"
   end
 end
