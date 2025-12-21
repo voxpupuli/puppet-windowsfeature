@@ -1,7 +1,7 @@
 # puppet-windowsfeature
 
 [![License](https://img.shields.io/github/license/voxpupuli/puppet-windowsfeature.svg)](https://github.com/voxpupuli/puppet-windowsfeature/blob/master/LICENSE)
-[![Build Status](https://travis-ci.org/voxpupuli/puppet-windowsfeature.svg?branch=master)](https://travis-ci.org/voxpupuli/puppet-windowsfeature)
+![Build Status](https://github.com/voxpupuli/puppet-windowsfeature/actions/workflows/ci.yml/badge.svg?branch=master)
 [![Code Coverage](https://coveralls.io/repos/github/voxpupuli/puppet-windowsfeature/badge.svg?branch=master)](https://coveralls.io/github/voxpupuli/puppet-windowsfeature?branch=master)
 [![Puppet Forge](https://img.shields.io/puppetforge/v/puppet/windowsfeature.svg)](https://forge.puppetlabs.com/puppet/windowsfeature)
 [![Puppet Forge - downloads](https://img.shields.io/puppetforge/dt/puppet/windowsfeature.svg)](https://forge.puppetlabs.com/puppet/windowsfeature)
