@@ -2,6 +2,7 @@
 
 require 'rexml/document'
 include REXML
+
 Puppet::Type.type(:windowsfeature).provide(:default) do
   # We don't support 1.8.7 officially, but lets be nice and not cause errors
   # rubocop:disable Style/HashSyntax
@@ -35,7 +36,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
               end
       # put name and state into a hash
       feature_hash = {
-        :ensure => state, :name => name
+        :ensure => state, :name => name,
       }
       # push hash to feature array
       features.push(feature_hash)
