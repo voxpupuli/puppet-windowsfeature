@@ -41,7 +41,7 @@ RSpec.configure do |c|
 
   c.before :suite do
     path = File.expand_path("#{File.dirname(__FILE__)}/../").split('/')
-    name = path[path.length - 1].split('-')[1]
+    name = path[-1].split('-')[1]
     # Install module and dependencies
     puppet_module_install(source: proj_root, module_name: name)
   end

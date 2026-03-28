@@ -13,7 +13,7 @@ describe Puppet::Type.type(:windowsfeature) do
 
   let :resource do
     Puppet::Type.type(:windowsfeature).new(
-      name: 'example_feature'
+      name: 'example_feature',
     )
   end
 
@@ -47,8 +47,8 @@ describe Puppet::Type.type(:windowsfeature) do
       end
 
       it 'rejects non-boolen' do
-        expect { described_class.new(name: 'feature-name', installmanagementtools: 'foo') }.
-          to raise_error(Puppet::ResourceError)
+        expect { described_class.new(name: 'feature-name', installmanagementtools: 'foo') }
+          .to raise_error(Puppet::ResourceError)
       end
     end
 
@@ -58,8 +58,8 @@ describe Puppet::Type.type(:windowsfeature) do
       end
 
       it 'rejects non-boolen' do
-        expect { described_class.new(name: 'feature-name', installsubfeatures: 'foo') }.
-          to raise_error(Puppet::ResourceError)
+        expect { described_class.new(name: 'feature-name', installsubfeatures: 'foo') }
+          .to raise_error(Puppet::ResourceError)
       end
     end
 
@@ -69,8 +69,8 @@ describe Puppet::Type.type(:windowsfeature) do
       end
 
       it 'rejects non-boolen' do
-        expect { described_class.new(name: 'feature-name', restart: 'foo') }.
-          to raise_error(Puppet::ResourceError)
+        expect { described_class.new(name: 'feature-name', restart: 'foo') }
+          .to raise_error(Puppet::ResourceError)
       end
     end
 
@@ -80,8 +80,8 @@ describe Puppet::Type.type(:windowsfeature) do
       end
 
       it 'rejects non-string' do
-        expect { described_class.new(name: 'feature-name', source: false) }.
-          to raise_error(%r{Parameter source is not a string.})
+        expect { described_class.new(name: 'feature-name', source: false) }
+          .to raise_error(%r{Parameter source is not a string.})
       end
     end
   end

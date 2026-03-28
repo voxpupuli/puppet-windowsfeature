@@ -8,7 +8,7 @@ describe provider_class do
   let :resource do
     Puppet::Type.type(:windowsfeature).new(
       title: 'feature-name',
-      provider: described_class.name
+      provider: described_class.name,
     )
   end
 
@@ -81,7 +81,7 @@ describe provider_class do
         Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           installmanagementtools: true,
-          provider: described_class.name
+          provider: described_class.name,
         )
       end
 
@@ -102,7 +102,7 @@ describe provider_class do
         Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           installsubfeatures: true,
-          provider: described_class.name
+          provider: described_class.name,
         )
       end
 
@@ -118,7 +118,7 @@ describe provider_class do
         Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           source: 'C:\Windows\sxs',
-          provider: described_class.name
+          provider: described_class.name,
         )
       end
 
@@ -134,7 +134,7 @@ describe provider_class do
         Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           restart: true,
-          provider: described_class.name
+          provider: described_class.name,
         )
       end
 
@@ -168,7 +168,7 @@ describe provider_class do
         Puppet::Type.type(:windowsfeature).new(
           title: 'feature-name',
           restart: true,
-          provider: described_class.name
+          provider: described_class.name,
         )
       end
 
