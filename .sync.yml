@@ -1,4 +1,8 @@
 ---
+Gemfile:
+  optional:
+    ':test':
+      - gem: 'rexml'
 spec/spec_helper.rb:
   spec_overrides: "require 'spec_helper_methods'"
 .github/workflows/ci.yml:
