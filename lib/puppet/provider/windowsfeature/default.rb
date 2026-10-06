@@ -4,6 +4,8 @@ require 'rexml/document'
 include REXML
 
 Puppet::Type.type(:windowsfeature).provide(:default) do
+  desc 'Manages Windows features with the ServerManager cmdlets, run through ruby-pwsh.'
+
   # We don't support 1.8.7 officially, but lets be nice and not cause errors
   # rubocop:disable Style/HashSyntax
 
