@@ -9,15 +9,23 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
 
   # windows only
   confine :kernel => :windows
-  # powershell, powershell, powershell.  where to find it.
-  commands :ps =>
-    if File.exist?("#{ENV.fetch('SYSTEMROOT', nil)}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe")
-      "#{ENV.fetch('SYSTEMROOT', nil)}\\sysnative\\WindowsPowershell\\v1.0\\powershell.exe"
-    elsif File.exist?("#{ENV.fetch('SYSTEMROOT', nil)}\\system32\\WindowsPowershell\\v1.0\\powershell.exe")
-      "#{ENV.fetch('SYSTEMROOT', nil)}\\system32\\WindowsPowershell\\v1.0\\powershell.exe"
-    else
-      'powershell.exe'
-    end
+  confine :feature => :pwshlib
+
+  # Pwsh::Manager.instance returns the same host for identical path/args, so the session is reused.
+  def self.ps(code)
+    debug = Puppet::Util::Log.level == :debug
+    manager = Pwsh::Manager.instance(Pwsh::Manager.powershell_path, Pwsh::Manager.powershell_args, debug: debug)
+    # 30 minutes: feature installs can outlast ruby-pwsh's 300s default timeout.
+    result = manager.execute("$ErrorActionPreference='Stop'; #{code}", 30 * 60 * 1000)
+    error = "PowerShell command failed (exit #{result[:exitcode]}): #{Array(result[:stderr]).join(' ')} #{result[:errormessage]}".strip
+    raise Puppet::Error, error unless result[:exitcode].to_i.zero?
+
+    result[:stdout]
+  end
+
+  def ps(code)
+    self.class.ps(code)
+  end
 
   def self.instances
     # an array to store feature hashes
@@ -61,13 +69,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
   end
 
   def create
-    # an array called array
-    array = []
-    # if it is windows 2008 let's just call it that
-    win2008 = Facter.value(:kernelmajversion) == '6.1'
-    # set the install line
-    array << "Import-Module ServerManager; Add-WindowsFeature #{resource[:name]}" if win2008 == true
-    array << "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature #{resource[:name]}" if win2008 == false
+    array = ["$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Install-WindowsFeature #{resource[:name]}"]
     # add restart, subfeatures and a source optionally
     array << '-IncludeAllSubFeature' if @resource[:installsubfeatures] == true
     if @resource[:restart] == true
@@ -75,11 +77,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
       array << '-Restart'
     end
     array << "-Source #{resource[:source]}" unless @resource[:source].to_s.strip.empty?
-    # raise an error if 2008 tried to install mgmt tools
-    raise Puppet::Error, 'installmanagementtools can only be used with Windows 2012 and above' if @resource[:installmanagementtools] == true && win2008 == true
-
-    # install management tools
-    array << '-IncludeManagementTools' if @resource[:installmanagementtools] == true && win2008 == false
+    array << '-IncludeManagementTools' if @resource[:installmanagementtools] == true
     # show the created ps string, get the result, show the result (debug)
     Puppet.debug "Powershell create command is '#{array}'"
     result = ps(array.join(' '))
@@ -87,13 +85,7 @@ Puppet::Type.type(:windowsfeature).provide(:default) do
   end
 
   def destroy
-    # an array called array
-    array = []
-    # if it is windows 2008 let's just call it that
-    win2008 = Facter.value(:kernelmajversion) == '6.1'
-    # set the uninstall line
-    array << "Import-Module ServerManager; Remove-WindowsFeature #{resource[:name]}" if win2008 == true
-    array << "$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature #{resource[:name]}" if win2008 == false
+    array = ["$ProgressPreference='SilentlyContinue'; Import-Module ServerManager; Uninstall-WindowsFeature #{resource[:name]}"]
     # add the restart flag optionally
     if @resource[:restart] == true
       Puppet.deprecation_warning('The restart parameter has been deprecated in favor of the puppetlabs reboot module ( https://github.com/puppetlabs/puppetlabs-reboot ).  This parameter will be removed in the next release.')
