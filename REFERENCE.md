@@ -6,13 +6,13 @@
 
 ### Resource types
 
-* [`windowsfeature`](#windowsfeature)
+* [`windowsfeature`](#windowsfeature): Manages Windows Server roles and features through the ServerManager module.
 
 ## Resource types
 
 ### <a name="windowsfeature"></a>`windowsfeature`
 
-The windowsfeature type.
+Manages Windows Server roles and features through the ServerManager module.
 
 #### Properties
 
@@ -22,7 +22,7 @@ The following properties are available in the `windowsfeature` type.
 
 Valid values: `present`, `absent`
 
-The basic property that the resource should be in.
+Whether the feature should be installed (`present`) or removed (`absent`).
 
 Default value: `present`
 
@@ -41,16 +41,19 @@ The following parameters are available in the `windowsfeature` type.
 
 Valid values: `true`, `false`, `yes`, `no`
 
+Whether to install all applicable management tools for the feature.
 
 ##### <a name="-windowsfeature--installsubfeatures"></a>`installsubfeatures`
 
 Valid values: `true`, `false`, `yes`, `no`
 
+Whether to install all subordinate role services and subfeatures of the feature.
 
 ##### <a name="-windowsfeature--name"></a>`name`
 
 namevar
 
+The name of the feature to manage.
 
 ##### <a name="-windowsfeature--provider"></a>`provider`
 
@@ -61,7 +64,8 @@ usually discover the appropriate provider for your platform.
 
 Valid values: `true`, `false`, `yes`, `no`
 
+Whether to restart the system automatically if the installation requires it. Deprecated in favor of the reboot module.
 
 ##### <a name="-windowsfeature--source"></a>`source`
 
-
+The location of an installation source, which must match the exact Windows version.

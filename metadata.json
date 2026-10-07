@@ -3,7 +3,7 @@
   "version": "5.0.1-rc0",
   "author": "Vox Pupuli",
   "license": "MIT",
-  "summary": "A module that will turn windows features on or off for Windows Server 2008 and above",
+  "summary": "A module that will turn windows features on or off for Windows Server 2012 and above",
   "source": "https://github.com/voxpupuli/puppet-windowsfeature",
   "project_page": "https://github.com/voxpupuli/puppet-windowsfeature",
   "issues_url": "https://github.com/voxpupuli/puppet-windowsfeature/issues",
@@ -16,7 +16,6 @@
     {
       "operatingsystem": "windows",
       "operatingsystemrelease": [
-        "2008R2",
         "2012",
         "2012R2",
         "2016",
@@ -25,7 +24,12 @@
       ]
     }
   ],
-  "dependencies": [],
+  "dependencies": [
+    {
+      "name": "puppetlabs/pwshlib",
+      "version_requirement": ">= 1.0.0 < 3.0.0"
+    }
+  ],
   "requirements": [
     {
       "name": "openvox",
